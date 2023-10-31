@@ -1,0 +1,11 @@
+.IngredientDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.IngredientDetails_table {
+  color: #8585ad;
+
+  display: flex;
+  gap: 20px;
+}
