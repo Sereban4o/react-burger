@@ -1,51 +1,43 @@
-.app__header{
-    width: 1920px;
-    height: 88px;
-    display: flex;
-    margin-top: 40px;
-    background-color: #1C1C21;
+.app__header {
+  width: 1920px;
+  height: 88px;
+  display: flex;
+  background-color: #1c1c21;
 }
-.app__header_button{
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    justify-content: center;
-       
-    
-    height: 56px;
-    border-radius: 40px;
-    border: 0px;
-    margin-top: 16px;
-    margin-bottom: 16px;
-   
-   
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0em;
-    text-align: left;
-
+.app__header_button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  border-radius: 40px;
+  border: 0px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
 }
 
-.app__header_button_constructor{
-width: 178px;
-margin-left: 320px;
-color: #F2F2F3;
+.app__header_button_constructor {
+  width: 178px;
+  margin-left: 320px;
+  color: #f2f2f3;
 }
-.app__header_button_feed{
-    width: 197px;
-    margin-left: 8px;
-    color: #8585AD;
-}
-
-.app__header_logo{
-    margin-left: 112px;
-    display: flex;
-    align-items: center;
+.app__header_button_feed {
+  width: 197px;
+  margin-left: 8px;
+  color: #8585ad;
 }
 
-.app__header_button_login{
-    width: 207px;
-    margin-left: 288.85px;
-    color: #8585AD;
+.app__header_logo {
+  margin-left: 112px;
+  display: flex;
+  align-items: center;
+}
+
+.app__header_button_login {
+  width: 207px;
+  margin-left: 288.85px;
+  color: #8585ad;
 }

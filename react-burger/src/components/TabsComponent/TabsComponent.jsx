@@ -1,14 +1,15 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import { useState } from "react";
+import "./TabsComponent.css";
 
 function TabsComponent() {
-  const [current, setCurrent] = React.useState("buns");
+  const [current, setCurrent] = useState("buns");
 
   const onClick = (tab) => {
     setCurrent(tab);
   };
   return (
-    <div style={{ display: "flex" }}>
+    <div className="tabs_component">
       <Tab value="buns" active={current === "buns"} onClick={onClick}>
         Булки
       </Tab>

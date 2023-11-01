@@ -1,11 +1,16 @@
 .IngredientDetails {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .IngredientDetails_table {
   color: #8585ad;
-
   display: flex;
   gap: 20px;
+  margin-bottom: 60px;
+}
+
+.IngredientDetails img {
+  width: 480px;
 }

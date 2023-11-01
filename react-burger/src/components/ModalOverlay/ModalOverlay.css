@@ -1,10 +1,10 @@
 .modal {
   top: 20%;
-  left: 40%;
+  left: 30%;
   position: fixed;
   background-color: #1c1c21;
   z-index: 100;
-  max-width: 720px;
+  width: 720px;
   display: flex;
   flex-direction: column;
   border-radius: 40px;
@@ -23,4 +23,7 @@
 
 .modal_button {
   align-self: end;
+  background: none;
+  border: none;
+  position: absolute;
 }

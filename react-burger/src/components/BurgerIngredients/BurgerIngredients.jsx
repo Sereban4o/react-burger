@@ -4,21 +4,15 @@ import TabsComponent from "../TabsComponent/TabsComponent";
 import PropTypes from "prop-types";
 
 function BurgerIngredients(props) {
-  const typeBun = props.data.data.filter((dataType) => dataType.type === "bun");
+  const typeBun = props.data.filter((dataType) => dataType.type === "bun");
 
-  const typeMain = props.data.data.filter(
-    (dataType) => dataType.type === "main"
-  );
+  const typeMain = props.data.filter((dataType) => dataType.type === "main");
 
-  const typeSauce = props.data.data.filter(
-    (dataType) => dataType.type === "sauce"
-  );
+  const typeSauce = props.data.filter((dataType) => dataType.type === "sauce");
 
   return (
     <section className="content_box">
-      <p className="content_box_header text text_type_main-larg">
-        Соберите бургер
-      </p>
+      <h1 className="text text_type_main-large pt-10 pb-5">Соберите бургер</h1>
       <TabsComponent />
       <div className="content_box_ingredients" id="scrollbar">
         <p className="text text_type_main-medium">Булки</p>
@@ -72,7 +66,7 @@ function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  props: PropTypes.object,
+  data: PropTypes.array.isRequired,
 };
 
 export default BurgerIngredients;

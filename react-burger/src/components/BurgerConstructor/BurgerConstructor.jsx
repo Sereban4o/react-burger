@@ -6,15 +6,14 @@ import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { createPortal } from "react-dom";
-import { useState } from "react";
-import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import PropTypes from "prop-types";
+import { useModal } from "../../hooks/usemodal";
+import Modal from "../Modal/Modal";
 
 function BurgerConstructor(props) {
-  const [visible, setVisible] = useState(false);
-  const items = props.data.data;
+  const items = props.data;
   const contentItems = items.slice(1, items.length);
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   return (
     <section className="content_box pt-25">
@@ -30,14 +29,13 @@ function BurgerConstructor(props) {
         </div>
         <div className="burger-constructor" id="scrollbar">
           {contentItems.map((item) => (
-            <div>
+            <div key={item._id}>
               <DragIcon type="primary" />
 
               <ConstructorElement
                 text={item.name}
                 price={item.price}
                 thumbnail={item.image}
-                key={item._id}
               />
             </div>
           ))}
@@ -46,9 +44,9 @@ function BurgerConstructor(props) {
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={items[items.length - 1].name}
-            price={items[items.length - 1].price}
-            thumbnail={items[items.length - 1].image}
+            text={items[0].name}
+            price={items[0].price}
+            thumbnail={items[0].image}
           />
         </div>
       </div>
@@ -60,30 +58,22 @@ function BurgerConstructor(props) {
           htmlType="button"
           type="primary"
           size="medium"
-          onClick={() => {
-            setVisible(true);
-          }}
+          onClick={openModal}
         >
           Оформить заказ
         </Button>
       </div>
-      {visible &&
-        createPortal(
-          <ModalOverlay
-            onClose={() => {
-              setVisible(false);
-            }}
-          >
-            <OrderDetails />
-          </ModalOverlay>,
-          document.getElementById("react-modal")
-        )}
+      {isModalOpen && (
+        <Modal onClick={closeModal} isModalOpen={isModalOpen}>
+          <OrderDetails />
+        </Modal>
+      )}
     </section>
   );
 }
 
 BurgerConstructor.propTypes = {
-  props: PropTypes.object,
+  data: PropTypes.array.isRequired,
 };
 
 export default BurgerConstructor;
