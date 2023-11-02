@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AppHeader from "../AppHeader/AppHeader";
-import "./App.css";
+import style from "./App.module.css";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 
@@ -22,13 +22,14 @@ function App() {
         setData(data.data);
       })
       .catch((error) => {
-        throw error;
+        console.log(error);
       });
   }, []);
+
   return (
-    <div className="center app">
+    <div className={style.app}>
       <AppHeader />
-      <main className="content">
+      <main className={style.content}>
         {data && <BurgerIngredients data={data} />}
         {data && <BurgerConstructor data={data} />}
       </main>

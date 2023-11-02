@@ -1,49 +1,43 @@
-import "./IngredientDetails.css";
+import style from "./IngredientDetails.module.css";
 import PropTypes from "prop-types";
+import { ingredientType } from "../utils/types";
 
-function IngredientDetails({ props }) {
+function IngredientDetails({ item }) {
   return (
-    <>
-      <p className="text text_type_main-large ml-10 mt-15">
-        Детали ингредиента
-      </p>
-      <div className="IngredientDetails">
-        <img src={props.image} className="pb-4" alt={props.name}></img>
-        <p className="text text_type_main-small pb-8">{props.name}</p>
+    <div className={style.IngredientDetails_form}>
+      <p className="text text_type_main-large ml-10 mt-4">Детали ингредиента</p>
+      <div className={style.IngredientDetails}>
+        <img src={item.image} className="mb-4" alt={item.name}></img>
+        <p className="text text_type_main-medium mb-8">{item.name}</p>
         <div>
-          <div className="IngredientDetails_table">
-            <div className="IngredientDetails_table_item">
+          <div className={style.IngredientDetails_table}>
+            <div className={style.IngredientDetails_table_item}>
               <p className="text text_type_main-default">Калории,ккал</p>
-              <p className="text text_type_main-default">{props.calories}</p>
+              <p className="text text_type_main-default">{item.calories}</p>
             </div>
-            <div className="IngredientDetails_table_item">
+            <div className={style.IngredientDetails_table_item}>
               <p className="text text_type_main-default">Белки, г </p>
-              <p className="text text_type_main-default">{props.proteins}</p>
+              <p className="text text_type_main-default">{item.proteins}</p>
             </div>
-            <div className="IngredientDetails_table_item">
+            <div className={style.IngredientDetails_table_item}>
               <p className="text text_type_main-default">Жиры, г</p>
-              <p className="text text_type_main-default">{props.fat}</p>
+              <p className="text text_type_main-default">{item.fat}</p>
             </div>
-            <div className="IngredientDetails_table_item">
+            <div className={style.IngredientDetails_table_item}>
               <p className="text text_type_main-default">Углеводы, г</p>
               <p className="text text_type_main-default">
-                {props.carbohydrates}
+                {item.carbohydrates}
               </p>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
 IngredientDetails.propTypes = {
-  image: PropTypes.string,
-  name: PropTypes.string,
-  carbohydrates: PropTypes.string,
-  fat: PropTypes.string,
-  proteins: PropTypes.string,
-  calories: PropTypes.string,
+  item: ingredientType.isRequired,
 };
 
 export default IngredientDetails;

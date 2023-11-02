@@ -1,28 +1,37 @@
-import "./Ingredient.css";
+import style from "./Ingredient.module.css";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  CurrencyIcon,
+  Counter,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import Modal from "../Modal/Modal";
 import { useModal } from "../../hooks/usemodal";
+import { ingredientType } from "../utils/types";
 
 function Ingredient(props) {
   const { isModalOpen, openModal, closeModal } = useModal();
-
+  const index = props.index;
+  const item = props.item;
   return (
     <>
       <div onClick={openModal}>
-        <div className="ingredient-info">
-          <img src={props.image} alt={props.name}></img>
+        <div className={style.ingredient_info}>
+          {index == 0 && <Counter count={1} size="default" extraClass="m-1" />}
+          <img src={item.image} alt={item.name}></img>
+
           <p className="text text_type_main-medium">
-            {props.price}
+            {item.price}
             <CurrencyIcon type="primary" />
           </p>
-          <p className="text text_type_main-default">{props.name}</p>
+          <p className={`${style.ingredient_name} text text_type_main-default`}>
+            {item.name}
+          </p>
         </div>
       </div>
       {isModalOpen && (
         <Modal onClick={closeModal} isModalOpen={isModalOpen}>
-          <IngredientDetails props={props} />
+          <IngredientDetails item={item} />
         </Modal>
       )}
     </>
@@ -30,9 +39,7 @@ function Ingredient(props) {
 }
 
 Ingredient.propTypes = {
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
+  item: ingredientType.isRequired,
 };
 
 export default Ingredient;

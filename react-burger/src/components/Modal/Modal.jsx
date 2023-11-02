@@ -1,4 +1,4 @@
-import "./Modal.css";
+import style from "./Modal.module.css";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import { createPortal } from "react-dom";
 import PropTypes from "prop-types";

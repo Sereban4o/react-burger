@@ -1,4 +1,4 @@
-import "./ModalOverlay.css";
+import style from "./ModalOverlay.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
@@ -24,7 +24,7 @@ function ModalOverlay({ onClick, isModalOpen, children }) {
     const handleKey = (e) => {
       if (!isModalOpen) return;
 
-      if (e.keyCode == 27) {
+      if (e.key == "Escape") {
         onClick();
       }
     };
@@ -35,9 +35,9 @@ function ModalOverlay({ onClick, isModalOpen, children }) {
   }, []);
 
   return (
-    <div className="modal-bg">
-      <div className="modal" ref={modal}>
-        <button className="modal_button mr-10 mt-15">
+    <div className={style.modal_bg}>
+      <div className={style.modal} ref={modal}>
+        <button className={`${style.modal_button} mr-10 mt-15`}>
           <CloseIcon type="primary" onClick={onClick} />
         </button>
         {children}

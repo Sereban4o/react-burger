@@ -1,5 +1,5 @@
 import OrderDetails from "../OrderDetails/OrderDetails";
-import "./BurgerConstructor.css";
+import style from "./BurgerConstructor.module.css";
 import {
   ConstructorElement,
   DragIcon,
@@ -9,6 +9,7 @@ import {
 import PropTypes from "prop-types";
 import { useModal } from "../../hooks/usemodal";
 import Modal from "../Modal/Modal";
+import { ingredientType } from "../utils/types";
 
 function BurgerConstructor(props) {
   const items = props.data;
@@ -16,18 +17,18 @@ function BurgerConstructor(props) {
   const { isModalOpen, openModal, closeModal } = useModal();
 
   return (
-    <section className="content_box pt-25">
+    <section className={`${style.content_box} pt-25`}>
       <div className="pl-4">
         <div className="pb-4 pl-5">
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={items[0].name}
+            text={`${items[0].name} (верх)`}
             price={items[0].price}
             thumbnail={items[0].image}
           />
         </div>
-        <div className="burger-constructor" id="scrollbar">
+        <div className={style.burger_constructor} id="scrollbar">
           {contentItems.map((item) => (
             <div key={item._id}>
               <DragIcon type="primary" />
@@ -44,14 +45,14 @@ function BurgerConstructor(props) {
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={items[0].name}
+            text={`${items[0].name} (низ)`}
             price={items[0].price}
             thumbnail={items[0].image}
           />
         </div>
       </div>
-      <div className="order">
-        <p className="order_price text text_type_main-medium">
+      <div className={style.order}>
+        <p className={`${style.order_price} text text_type_main-medium`}>
           610 <CurrencyIcon type="primary" />
         </p>
         <Button
@@ -74,6 +75,7 @@ function BurgerConstructor(props) {
 
 BurgerConstructor.propTypes = {
   data: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(ingredientType.isRequired).isRequired,
 };
 
 export default BurgerConstructor;

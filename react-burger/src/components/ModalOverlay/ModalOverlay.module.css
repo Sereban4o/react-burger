@@ -9,7 +9,7 @@
   flex-direction: column;
   border-radius: 40px;
 }
-.modal-bg:before {
+.modal_bg:before {
   content: "";
   background: #000;
   position: fixed;
