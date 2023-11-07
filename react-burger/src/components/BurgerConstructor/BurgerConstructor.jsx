@@ -6,15 +6,26 @@ import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import { useModal } from "../../hooks/usemodal";
 import Modal from "../Modal/Modal";
-import { ingredientType } from "../utils/types";
+import { useContext, useReducer } from "react";
+import { DataContext } from "../service/dataContext";
 
-function BurgerConstructor(props) {
-  const items = props.data;
-  const contentItems = items.slice(1, items.length);
+function BurgerConstructor() {
   const { isModalOpen, openModal, closeModal } = useModal();
+  const { buns } = useContext(DataContext);
+  const { main } = useContext(DataContext);
+  const { sauce } = useContext(DataContext);
+
+  const randomMain = main[Math.floor(Math.random() * main.length)];
+  const randomSauce = sauce[Math.floor(Math.random() * sauce.length)];
+  const randomBun = buns[Math.floor(Math.random() * buns.length)];
+
+  const summOrder = randomBun.price + randomMain.price + randomSauce.price;
+
+  const orderElementsID = {
+    ingredients: [randomBun._id, randomMain._id, randomSauce._id],
+  };
 
   return (
     <section className={`${style.content_box} pt-25`}>
@@ -23,37 +34,42 @@ function BurgerConstructor(props) {
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={`${items[0].name} (верх)`}
-            price={items[0].price}
-            thumbnail={items[0].image}
+            text={`${randomBun.name} (верх)`}
+            price={randomBun.price}
+            thumbnail={randomBun.image}
           />
         </div>
         <div className={style.burger_constructor} id="scrollbar">
-          {contentItems.map((item) => (
-            <div key={item._id}>
-              <DragIcon type="primary" />
-
-              <ConstructorElement
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-              />
-            </div>
-          ))}
+          <div>
+            <DragIcon type="primary" />
+            <ConstructorElement
+              text={randomMain.name}
+              price={randomMain.price}
+              thumbnail={randomMain.image}
+            />
+          </div>
+          <div>
+            <DragIcon type="primary" />
+            <ConstructorElement
+              text={randomSauce.name}
+              price={randomSauce.price}
+              thumbnail={randomSauce.image}
+            />
+          </div>
         </div>
         <div className="pt-4 pl-5">
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={`${items[0].name} (низ)`}
-            price={items[0].price}
-            thumbnail={items[0].image}
+            text={`${randomBun.name} (низ)`}
+            price={randomBun.price}
+            thumbnail={randomBun.image}
           />
         </div>
       </div>
       <div className={style.order}>
         <p className={`${style.order_price} text text_type_main-medium`}>
-          610 <CurrencyIcon type="primary" />
+          {summOrder} <CurrencyIcon type="primary" />
         </p>
         <Button
           htmlType="button"
@@ -66,16 +82,11 @@ function BurgerConstructor(props) {
       </div>
       {isModalOpen && (
         <Modal onClick={closeModal} isModalOpen={isModalOpen}>
-          <OrderDetails />
+          <OrderDetails orderElementsID={orderElementsID} />
         </Modal>
       )}
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.array.isRequired,
-  data: PropTypes.arrayOf(ingredientType.isRequired).isRequired,
-};
 
 export default BurgerConstructor;

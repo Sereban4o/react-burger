@@ -9,10 +9,9 @@ import Modal from "../Modal/Modal";
 import { useModal } from "../../hooks/usemodal";
 import { ingredientType } from "../utils/types";
 
-function Ingredient(props) {
+function Ingredient({ item, index }) {
   const { isModalOpen, openModal, closeModal } = useModal();
-  const index = props.index;
-  const item = props.item;
+
   return (
     <>
       <div onClick={openModal}>
@@ -40,6 +39,7 @@ function Ingredient(props) {
 
 Ingredient.propTypes = {
   item: ingredientType.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default Ingredient;

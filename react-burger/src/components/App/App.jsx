@@ -3,9 +3,13 @@ import AppHeader from "../AppHeader/AppHeader";
 import style from "./App.module.css";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
+import { DataContext } from "../service/dataContext";
 
 function App() {
-  const [data, setData] = useState(null);
+  const [dataAPI, setDataAPI] = useState(null);
+  const [buns, setBuns] = useState(null);
+  const [sauce, setSauce] = useState(null);
+  const [main, setMain] = useState(null);
 
   const url = "https://norma.nomoreparties.space/api/ingredients";
 
@@ -19,7 +23,10 @@ function App() {
         }
       })
       .then((data) => {
-        setData(data.data);
+        setDataAPI(data.data);
+        setBuns(data.data.filter((dataType) => dataType.type === "bun"));
+        setSauce(data.data.filter((dataType) => dataType.type === "sauce"));
+        setMain(data.data.filter((dataType) => dataType.type === "main"));
       })
       .catch((error) => {
         console.log(error);
@@ -30,8 +37,12 @@ function App() {
     <div className={style.app}>
       <AppHeader />
       <main className={style.content}>
-        {data && <BurgerIngredients data={data} />}
-        {data && <BurgerConstructor data={data} />}
+        {dataAPI && <BurgerIngredients buns={buns} sauce={sauce} main={main} />}
+        {dataAPI && (
+          <DataContext.Provider value={{ buns, main, sauce }}>
+            <BurgerConstructor />
+          </DataContext.Provider>
+        )}
       </main>
     </div>
   );

@@ -1,10 +1,35 @@
 import style from "./OrderDetails.module.css";
 import ImageDone from "../../img/done.png";
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
-function OrderDetails({}) {
+function OrderDetails({ orderElementsID }) {
+  const [orderNumber, setOrderNumber] = useState(null);
+
+  const url = "https://norma.nomoreparties.space/api/orders";
+
+  useEffect(() => {
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify(orderElementsID),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setOrderNumber(data.order.number);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+
   return (
     <div className={style.order_details}>
-      <p className="text text_type_digits-large">034536</p>
+      {orderNumber && (
+        <p className="text text_type_digits-large">{orderNumber}</p>
+      )}
       <p className="text text_type_main-medium mt-8 mb-15">
         идентификатор заказа
       </p>
@@ -18,5 +43,13 @@ function OrderDetails({}) {
     </div>
   );
 }
+
+OrderDetails.propTypes = {
+  orderElementsID: PropTypes.object.isRequired,
+  orderElementsID: PropTypes.objectOf(PropTypes.array.isRequired).isRequired,
+  orderElementsID: PropTypes.objectOf(
+    PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
+  ).isRequired,
+};
 
 export default OrderDetails;

@@ -3,12 +3,12 @@ import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
 
-function Modal(props) {
+function Modal({ onClick, isModalOpen, children }) {
   return (
     <>
       {createPortal(
-        <ModalOverlay onClick={props.onClick} isModalOpen={props.isModalOpen}>
-          {props.children}
+        <ModalOverlay onClick={onClick} isModalOpen={isModalOpen}>
+          {children}
         </ModalOverlay>,
         document.getElementById("react-modal")
       )}
