@@ -6,6 +6,10 @@
   height: 40vh;
 }
 
+.burger_item {
+  display: flex;
+  align-items: center;
+}
 .order {
   padding-top: 40px;
   display: flex;
@@ -15,4 +19,8 @@
 
 .order_price {
   align-self: center;
+}
+
+.content_box {
+  width: 600px;
 }

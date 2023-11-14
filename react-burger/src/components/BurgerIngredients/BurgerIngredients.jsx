@@ -1,48 +1,90 @@
 import style from "./BurgerIngredients.module.css";
 import Ingredient from "../Ingredient/Ingredient";
-import TabsComponent from "../TabsComponent/TabsComponent";
-import PropTypes from "prop-types";
-import { ingredientType } from "../utils/types";
+import { useDispatch, useSelector } from "react-redux";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useRef, useState } from "react";
 
-function BurgerIngredients({ buns, sauce, main }) {
+function BurgerIngredients() {
+  const { bun, main, sauce } = useSelector((state) => state.ingredients);
+
+  const [current, setCurrent] = useState("buns");
+
+  const bunsRef = useRef(null);
+  const saucesRef = useRef(null);
+  const mainsRef = useRef(null);
+
+  const onClick = (tab) => {
+    setCurrent(tab);
+  };
+
+  const handleScroll = (e) => {
+    // Пока под вопросом как рассчитать.
+    switch (true) {
+      case e.target.scrollTop >= saucesRef.current.scrollHeight - 84 &&
+        e.target.scrollTop < mainsRef.current.scrollHeight - 200:
+        return setCurrent("sauces");
+      case e.target.scrollTop >= mainsRef.current.scrollHeight - 200:
+        return setCurrent("mains");
+      default:
+        return setCurrent("buns");
+    }
+  };
+
   return (
-    <section className="content_box">
-      <p className="content_box_header text text_type_main-large mt-10 mb-5">
+    <section className={style.content_box}>
+      <p
+        className={`${style.content_box_header} text text_type_main-large mt-10 mb-5`}
+      >
         Соберите бургер
       </p>
-      <TabsComponent />
+      <div className={style.tabs_component}>
+        <Tab value="buns" active={current === "buns"} onClick={onClick}>
+          Булки
+        </Tab>
+        <Tab value="sauces" active={current === "sauces"} onClick={onClick}>
+          Соусы
+        </Tab>
+        <Tab value="mains" active={current === "mains"} onClick={onClick}>
+          Начинки
+        </Tab>
+      </div>
 
-      <div className={style.content_box_ingredients} id="scrollbar">
-        <p className="text text_type_main-medium mt-10">Булки</p>
-        <div className={style.content_box_box}>
-          {buns.map((el, index) => {
-            return <Ingredient item={el} index={index} key={el._id} />;
-          })}
+      <div
+        className={style.content_box_ingredients}
+        id="scrollbar"
+        onScroll={handleScroll}
+      >
+        <div ref={bunsRef}>
+          <p className="text text_type_main-medium mt-10">Булки</p>
+          <div className={style.content_box_box}>
+            {bun.map((el, index) => (
+              <Ingredient item={el} index={index} id={el._id} key={el._id} />
+            ))}
+          </div>
         </div>
-        <p className="text text_type_main-medium  mt-10">Соусы</p>
-        <div className={style.content_box_box}>
-          {sauce.map((el, index) => (
-            <Ingredient item={el} index={index} key={el._id} />
-          ))}
+
+        <div ref={saucesRef}>
+          <p className="text text_type_main-medium  mt-10" ref={saucesRef}>
+            Соусы
+          </p>
+          <div className={style.content_box_box}>
+            {sauce.map((el, index) => (
+              <Ingredient item={el} index={index} key={el._id} />
+            ))}
+          </div>
         </div>
-        <p className="text text_type_main-medium  mt-10">Начинки</p>
-        <div className={style.content_box_box}>
-          {main.map((el, index) => (
-            <Ingredient item={el} index={index} key={el._id} />
-          ))}
+
+        <div ref={mainsRef}>
+          <p className="text text_type_main-medium  mt-10">Начинки</p>
+          <div className={style.content_box_box}>
+            {main.map((el, index) => (
+              <Ingredient item={el} index={index} key={el._id} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  buns: PropTypes.array.isRequired,
-  sauce: PropTypes.array.isRequired,
-  main: PropTypes.array.isRequired,
-  buns: PropTypes.arrayOf(ingredientType.isRequired).isRequired,
-  sauce: PropTypes.arrayOf(ingredientType.isRequired).isRequired,
-  main: PropTypes.arrayOf(ingredientType.isRequired).isRequired,
-};
 
 export default BurgerIngredients;
