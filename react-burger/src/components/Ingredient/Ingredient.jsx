@@ -4,7 +4,6 @@ import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import Modal from "../Modal/Modal";
 import { useModal } from "../../hooks/usemodal";
 import { ingredientType } from "../../services/utils/types";
@@ -16,8 +15,16 @@ import {
 import { useEffect } from "react";
 import { useDrag } from "react-dnd";
 
-function Ingredient({ item, index, id }) {
+function Ingredient({ item }) {
   const { isModalOpen, openModal, closeModal } = useModal();
+  const { buns, ingredients } = useSelector((state) => state.bugrerIngredients);
+
+  const arrauBunsFilter = buns.filter((el) => el._id === item._id);
+  const arrauIngredientsFilter = ingredients.filter(
+    (el) => el._id === item._id
+  );
+
+  const count = arrauBunsFilter.length * 2 + arrauIngredientsFilter.length;
 
   const dispatch = useDispatch();
 
@@ -47,7 +54,9 @@ function Ingredient({ item, index, id }) {
     <>
       <div onClick={openModal} ref={dragRef} style={{ opacity }}>
         <div className={style.ingredient_info}>
-          {index == 0 && <Counter count={1} size="default" extraClass="m-1" />}
+          {!count == 0 && (
+            <Counter count={count} size="default" extraClass="m-1" />
+          )}
           <img src={item.image} alt={item.name}></img>
 
           <p className="text text_type_main-medium">
@@ -69,4 +78,7 @@ function Ingredient({ item, index, id }) {
   );
 }
 
+Ingredient.propTypes = {
+  item: ingredientType.isRequired,
+};
 export default Ingredient;

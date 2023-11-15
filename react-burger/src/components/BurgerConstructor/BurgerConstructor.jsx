@@ -13,18 +13,32 @@ import {
   ADD_INGREDIENTS,
   UPDATE_INGREDIENTS,
 } from "../../services/actions/bugrerIngredients";
-import { useCallback, useEffect, useReducer } from "react";
+import { useCallback, useEffect } from "react";
 import { getOrder } from "../../services/actions/order";
-import { useDrop, useDrag } from "react-dnd";
+import { useDrop } from "react-dnd";
 import { v4 as uuid } from "uuid";
 import IngredientConstructor from "../IngredientConstructor/IngredientConstructor";
 
 function BurgerConstructor() {
   const { isModalOpen, openModal, closeModal } = useModal();
-
   const dispatch = useDispatch();
-
   const { buns, ingredients } = useSelector((state) => state.bugrerIngredients);
+
+  let summOrder = 0;
+  let orderElementsID = { ingredients: [] };
+
+  buns.map((el) => {
+    summOrder = (summOrder + el.price) * 2;
+    orderElementsID.ingredients = [
+      ...orderElementsID.ingredients,
+      el._id,
+      el._id,
+    ];
+  });
+  ingredients.map((el) => {
+    summOrder = summOrder + el.price;
+    orderElementsID.ingredients = [...orderElementsID.ingredients, el._id];
+  });
 
   const [{ isHover }, dropRef] = useDrop({
     accept: "ingredient",
@@ -53,21 +67,17 @@ function BurgerConstructor() {
     [ingredients, dispatch]
   );
 
-  let summOrder = 0;
-  let orderElementsID = { ingredients: [] };
-
-  buns.map((el) => {
-    summOrder = (summOrder + el.price) * 2;
-    orderElementsID.ingredients = [...orderElementsID.ingredients, el._id];
-  });
-  ingredients.map((el) => {
-    summOrder = summOrder + el.price;
-    orderElementsID.ingredients = [...orderElementsID.ingredients, el._id];
-  });
-
   useEffect(() => {
     if (isModalOpen) dispatch(getOrder(orderElementsID));
   }, [isModalOpen]);
+
+  //Техдолг. Нужно сделать вывод компонента с сообщением пользователю.
+  const alertCommand = () => {
+    alert(`Не выбраны ингредиенты`);
+  };
+
+  const command =
+    orderElementsID.ingredients.length > 0 ? openModal : alertCommand;
 
   return (
     <section className={`${style.content_box} pt-25`}>
@@ -122,7 +132,7 @@ function BurgerConstructor() {
           htmlType="button"
           type="primary"
           size="medium"
-          onClick={openModal}
+          onClick={command}
         >
           Оформить заказ
         </Button>

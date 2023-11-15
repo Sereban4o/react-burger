@@ -1,6 +1,6 @@
 import style from "./BurgerIngredients.module.css";
 import Ingredient from "../Ingredient/Ingredient";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef, useState } from "react";
 
@@ -58,7 +58,7 @@ function BurgerIngredients() {
           <p className="text text_type_main-medium mt-10">Булки</p>
           <div className={style.content_box_box}>
             {bun.map((el, index) => (
-              <Ingredient item={el} index={index} id={el._id} key={el._id} />
+              <Ingredient item={el} key={el._id} />
             ))}
           </div>
         </div>
@@ -69,7 +69,7 @@ function BurgerIngredients() {
           </p>
           <div className={style.content_box_box}>
             {sauce.map((el, index) => (
-              <Ingredient item={el} index={index} key={el._id} />
+              <Ingredient item={el} key={el._id} />
             ))}
           </div>
         </div>
@@ -78,7 +78,7 @@ function BurgerIngredients() {
           <p className="text text_type_main-medium  mt-10">Начинки</p>
           <div className={style.content_box_box}>
             {main.map((el, index) => (
-              <Ingredient item={el} index={index} key={el._id} />
+              <Ingredient item={el} key={el._id} />
             ))}
           </div>
         </div>

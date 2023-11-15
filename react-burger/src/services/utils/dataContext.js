@@ -1,5 +1,5 @@
 import React from "react";
-import { ingredientType } from "../../services/utils/types";
+import { ingredientType } from "./types";
 import PropTypes from "prop-types";
 
 export const DataContext = React.createContext(null);

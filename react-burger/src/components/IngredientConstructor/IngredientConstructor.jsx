@@ -7,12 +7,15 @@ import { useRef } from "react";
 import { useDrop, useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { REMOVE_INGREDIENTS } from "../../services/actions/bugrerIngredients";
+import { ingredientType } from "../../services/utils/types";
+import PropTypes from "prop-types";
 
 function IngredientConstructor({ item, index, moveItem }) {
   const dispatch = useDispatch();
 
   const { ingredients } = useSelector((state) => state.bugrerIngredients);
   const ref = useRef(null);
+
   const [{ handlerId }, drop] = useDrop({
     accept: "component",
     collect(monitor) {
@@ -20,38 +23,27 @@ function IngredientConstructor({ item, index, moveItem }) {
         handlerId: monitor.getHandlerId(),
       };
     },
-
     hover(item, monitor) {
       if (!ref.current) {
         return;
       }
-
       const dragIndex = item.index;
       const hoverIndex = index;
-
       if (dragIndex === hoverIndex) {
         return;
       }
-
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
-
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
       const clientOffset = monitor.getClientOffset();
-
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }
-
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-
       moveItem(dragIndex, hoverIndex);
-
       item.index = hoverIndex;
     },
   });
@@ -99,4 +91,9 @@ function IngredientConstructor({ item, index, moveItem }) {
   );
 }
 
+IngredientConstructor.propTypes = {
+  item: ingredientType.isRequired,
+  index: PropTypes.number.isRequired,
+  moveItem: PropTypes.func.isRequired,
+};
 export default IngredientConstructor;

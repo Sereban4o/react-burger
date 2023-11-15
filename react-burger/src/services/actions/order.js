@@ -14,22 +14,19 @@ export function getOrder(orderElementsID) {
     },
   };
 
-  return function (dispatch) {
-    dispatch({
-      type: IMPORT_ORDER_API,
-    });
+  return async function (dispatch) {
+    dispatch({ type: IMPORT_ORDER_API });
 
-    getRequest(urlOrder, post).then((res) => {
-      if (res && res.success) {
-        dispatch({
-          type: IMPORT_ORDER_API_SUCCESS,
-          data: res.order,
-        });
-      } else {
-        dispatch({
-          type: IMPORT_ORDER_API_FAILED,
-        });
-      }
-    });
+    try {
+      const dataAPI = await getRequest(urlOrder, post);
+
+      dispatch({
+        type: IMPORT_ORDER_API_SUCCESS,
+        data: dataAPI.order,
+      });
+    } catch (error) {
+      console.log(error);
+      dispatch({ type: IMPORT_ORDER_API_FAILED });
+    }
   };
 }
