@@ -6,7 +6,6 @@
   padding-left: calc(50% - 960px);
   padding-right: calc(50% - 960px);
 }
-
 .content {
   display: flex;
   justify-content: center;

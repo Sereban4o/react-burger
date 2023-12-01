@@ -1,5 +1,5 @@
 import style from "./OrderDetails.module.css";
-import ImageDone from "../../img/done.png";
+import ImageDone from "../../../../img/done.png";
 import { useSelector } from "react-redux";
 
 function OrderDetails() {

@@ -15,6 +15,7 @@ code {
 }
 a {
   text-decoration: none;
+  color: #4c4cff;
 }
 
 .center {
@@ -35,4 +36,12 @@ a {
 
 #scrollbar::-webkit-scrollbar-thumb {
   background-color: #8585ad;
+}
+
+.active {
+  color: #f2f2f3;
+}
+
+.inactive {
+  color: #8585ad;
 }

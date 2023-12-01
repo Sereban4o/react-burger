@@ -1,23 +1,25 @@
 import style from "./Ingredient.module.css";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import IngredientDetails from "./IngredientDetails/IngredientDetails";
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import Modal from "../Modal/Modal";
-import { useModal } from "../../hooks/usemodal";
-import { ingredientType } from "../../services/utils/types";
+import Modal from "../../../Modal/Modal";
+import { useModal } from "../../../../hooks/usemodal";
+import { ingredientType } from "../../../../services/utils/types";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_INGREDIENT,
   REMOVE_INGREDIENT,
-} from "../../services/actions/ingredient";
+} from "../../../../services/actions/ingredient";
 import { useEffect } from "react";
 import { useDrag } from "react-dnd";
+import { useLocation, Link } from "react-router-dom";
 
 function Ingredient({ item }) {
   const { isModalOpen, openModal, closeModal } = useModal();
   const { buns, ingredients } = useSelector((state) => state.bugrerIngredients);
+  const location = useLocation();
 
   const arrauBunsFilter = buns.filter((el) => el._id === item._id);
   const arrauIngredientsFilter = ingredients.filter(
@@ -52,28 +54,38 @@ function Ingredient({ item }) {
 
   return (
     <>
-      <div onClick={openModal} ref={dragRef} style={{ opacity }}>
-        <div className={style.ingredient_info}>
-          {!count == 0 && (
-            <Counter count={count} size="default" extraClass="m-1" />
-          )}
-          <img src={item.image} alt={item.name}></img>
-
-          <p className="text text_type_main-medium">
-            {item.price}
-            <CurrencyIcon type="primary" />
-          </p>
-          <p className={`${style.ingredient_name} text text_type_main-default`}>
-            {item.name}
-          </p>
+      <Link
+        key={item._id}
+        to={{
+          pathname: `/ingredient/${item._id}/`,
+          state: { background: location },
+        }}
+        className={style.ingredient_link}
+        onClick={openModal}
+      >
+        <div /* onClick={openModal} */ ref={dragRef} style={{ opacity }}>
+          <div className={style.ingredient_info}>
+            {!count == 0 && (
+              <Counter count={count} size="default" extraClass="m-1" />
+            )}
+            <img src={item.image} alt={item.name}></img>
+            <p className="text text_type_main-medium">
+              {item.price}
+              <CurrencyIcon type="primary" />
+            </p>
+            <p
+              className={`${style.ingredient_name} text text_type_main-default`}
+            >
+              {item.name}
+            </p>
+          </div>
         </div>
-      </div>
-
-      {isModalOpen && (
+      </Link>
+      {/* {isModalOpen && (
         <Modal onClick={closeModal} isModalOpen={isModalOpen}>
           <IngredientDetails />
         </Modal>
-      )}
+      )} */}
     </>
   );
 }

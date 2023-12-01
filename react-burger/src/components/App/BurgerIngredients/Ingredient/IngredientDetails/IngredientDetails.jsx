@@ -1,8 +1,18 @@
+import { useParams } from "react-router-dom";
 import style from "./IngredientDetails.module.css";
 import { useSelector } from "react-redux";
 
 function IngredientDetails() {
-  const { ingredient } = useSelector((state) => state.ingredient);
+  const { dataApi } = useSelector((state) => state.ingredients);
+
+  const { id } = useParams();
+
+  const ingredients = dataApi.filter((el) => el._id === id);
+
+  if (ingredients.length < 1) {
+    return <>Нет данных</>;
+  }
+  const ingredient = ingredients[0];
 
   return (
     <div className={style.IngredientDetails_form}>

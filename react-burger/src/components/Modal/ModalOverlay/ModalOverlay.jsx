@@ -10,7 +10,7 @@ function ModalOverlay({ onClick, isModalOpen, children }) {
     const handleClick = (e) => {
       if (!isModalOpen) return;
 
-      if (e.target.children[0] == modal.current) {
+      if (e.target.children[0] === modal.current) {
         onClick();
       }
     };

@@ -1,8 +1,9 @@
-import ModalOverlay from "../ModalOverlay/ModalOverlay";
+import ModalOverlay from "./ModalOverlay/ModalOverlay";
 import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
+import { useLocation, Link } from "react-router-dom";
 
-function Modal({ onClick, isModalOpen, children }) {
+function Modal({ onClick, isModalOpen, id, children }) {
   return (
     <>
       {createPortal(

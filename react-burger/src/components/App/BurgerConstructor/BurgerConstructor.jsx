@@ -1,32 +1,33 @@
-import OrderDetails from "../OrderDetails/OrderDetails";
+import OrderDetails from "./OrderDetails/OrderDetails";
 import style from "./BurgerConstructor.module.css";
 import {
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useModal } from "../../hooks/usemodal";
-import Modal from "../Modal/Modal";
+import { useModal } from "../../../hooks/usemodal";
+import Modal from "../../Modal/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_INGREDIENTS,
   UPDATE_INGREDIENTS,
-} from "../../services/actions/bugrerIngredients";
+} from "../../../services/actions/bugrerIngredients";
 import { useCallback, useEffect } from "react";
-import { getOrder } from "../../services/actions/order";
+import { getOrder } from "../../../services/actions/order";
 import { useDrop } from "react-dnd";
 import { v4 as uuid } from "uuid";
-import IngredientConstructor from "../IngredientConstructor/IngredientConstructor";
+import IngredientConstructor from "./IngredientConstructor/IngredientConstructor";
+import { useAuth } from "../../../services/utils/auth";
+import { useNavigate } from "react-router-dom";
 
 function BurgerConstructor() {
   const { isModalOpen, openModal, closeModal } = useModal();
   const dispatch = useDispatch();
   const { buns, ingredients } = useSelector((state) => state.bugrerIngredients);
-
+  const auth = useAuth();
   let summOrder = 0;
   let orderElementsID = { ingredients: [] };
-
+  const navigate = useNavigate();
   buns.map((el) => {
     summOrder = (summOrder + el.price) * 2;
     orderElementsID.ingredients = [
@@ -76,8 +77,15 @@ function BurgerConstructor() {
     alert(`Не выбраны ингредиенты`);
   };
 
-  const command =
-    orderElementsID.ingredients.length > 0 ? openModal : alertCommand;
+  const goToLogin = () => {
+    navigate("/login/");
+  };
+
+  const command = !auth.user
+    ? goToLogin
+    : orderElementsID.ingredients.length > 0
+    ? openModal
+    : alertCommand;
 
   return (
     <section className={`${style.content_box} pt-25`}>

@@ -11,6 +11,9 @@
   position: relative;
 }
 
+.ingredient_link {
+  color: #ffffff;
+}
 .ingredient_name {
   text-align: center;
 }

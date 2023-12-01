@@ -1,5 +1,4 @@
-import { getRequest } from "../utils/api";
-import { urlOrder } from "../utils/apiAdress";
+import { request } from "../utils/api";
 
 export const IMPORT_ORDER_API = "IMPORT_ORDER_API";
 export const IMPORT_ORDER_API_SUCCESS = "IMPORT_ORDER_API_SUCCESS";
@@ -18,7 +17,7 @@ export function getOrder(orderElementsID) {
     dispatch({ type: IMPORT_ORDER_API });
 
     try {
-      const dataAPI = await getRequest(urlOrder, post);
+      const dataAPI = await request("orders", post);
 
       dispatch({
         type: IMPORT_ORDER_API_SUCCESS,

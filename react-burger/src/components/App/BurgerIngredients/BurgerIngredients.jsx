@@ -1,9 +1,9 @@
 import style from "./BurgerIngredients.module.css";
-import Ingredient from "../Ingredient/Ingredient";
+import Ingredient from "./Ingredient/Ingredient";
 import { useSelector } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef, useState } from "react";
-
+import { useLocation, Link } from "react-router-dom";
 function BurgerIngredients() {
   const { bun, main, sauce } = useSelector((state) => state.ingredients);
 
@@ -12,7 +12,7 @@ function BurgerIngredients() {
   const bunsRef = useRef(null);
   const saucesRef = useRef(null);
   const mainsRef = useRef(null);
-
+  const location = useLocation();
   const onClick = (tab) => {
     setCurrent(tab);
   };

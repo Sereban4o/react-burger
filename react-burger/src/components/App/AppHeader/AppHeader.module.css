@@ -11,7 +11,7 @@
 }
 
 .app__header_button_constructor {
-  color: #f2f2f3;
+  /* color: #f2f2f3; */
 }
 .app__header_button_grey {
   color: #8585ad;
@@ -25,4 +25,8 @@
 }
 .app__header_right {
   margin-left: auto;
+}
+
+.active {
+  color: aqua;
 }

@@ -1,5 +1,4 @@
-import { getRequest } from "../utils/api";
-import { urlIngredients } from "../utils/apiAdress";
+import { request } from "../utils/api";
 
 export const IMPORT_API = "IMPORT_API";
 export const IMPORT_API_SUCCESS = "IMPORT_API_SUCCESS";
@@ -10,7 +9,7 @@ export function getIngredients() {
     dispatch({ type: IMPORT_API });
 
     try {
-      const dataAPI = await getRequest(urlIngredients);
+      const dataAPI = await request("ingredients");
 
       dispatch({
         type: IMPORT_API_SUCCESS,
