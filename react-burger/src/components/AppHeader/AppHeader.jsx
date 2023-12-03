@@ -6,7 +6,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from "./AppHeader.module.css";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { useAuth } from "../../../services/utils/auth";
+import { useAuth } from "../../services/utils/auth";
 import { useState } from "react";
 
 function AppHeader() {
@@ -20,11 +20,18 @@ function AppHeader() {
             style.app__header_button_constructor
           } mt-4 mb-4 mr-7 text text_type_main-default`
         }
-      >
-        <BurgerIcon type="primary" />
-        Конструктор
-      </NavLink>
-      <a href="#"></a>
+        children={({ isActive }) =>
+          isActive ? (
+            <>
+              <BurgerIcon type="primary" /> Конструктор
+            </>
+          ) : (
+            <>
+              <BurgerIcon type="secondary" /> Конструктор
+            </>
+          )
+        }
+      ></NavLink>
       <Link
         to="/"
         href="#"
@@ -44,10 +51,20 @@ function AppHeader() {
               style.app__header_button
             } ${style.app__header_right} mt-4 mb-4 text text_type_main-default`
           }
-        >
-          <ProfileIcon type="primary" />
-          Личный кабинет
-        </NavLink>
+          children={({ isActive }) =>
+            isActive ? (
+              <>
+                <ProfileIcon type="primary" />
+                Личный кабинет
+              </>
+            ) : (
+              <>
+                <ProfileIcon type="secondary" />
+                Личный кабинет
+              </>
+            )
+          }
+        ></NavLink>
       )}
       {!auth.user && (
         <NavLink
@@ -57,10 +74,20 @@ function AppHeader() {
               style.app__header_button
             } ${style.app__header_right} mt-4 mb-4 text text_type_main-default`
           }
-        >
-          <ProfileIcon type="primary" />
-          Личный кабинет
-        </NavLink>
+          children={({ isActive }) =>
+            isActive ? (
+              <>
+                <ProfileIcon type="primary" />
+                Личный кабинет
+              </>
+            ) : (
+              <>
+                <ProfileIcon type="secondary" />
+                Личный кабинет
+              </>
+            )
+          }
+        ></NavLink>
       )}
     </header>
   );

@@ -1,49 +1,47 @@
-import { useRef, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import style from "./profile.module.css";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Navigate, Link, useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "../services/utils/auth";
-import { useSelector } from "react-redux";
+import { useVisible } from "../hooks/visible";
 
 export function Profile() {
   const auth = useAuth();
-  let userAuth = {};
-  if (auth.user) {
-    userAuth = auth.user;
-    userAuth["password"] = "111";
-  }
 
-  const [formUser, setFormUser] = useState(userAuth);
-  const [visiable, setVisiable] = useState(false);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
-  const nameRef = useRef(null);
+  const [user, setUser] = useState(auth.user);
+
+  const { visible, onVisible } = useVisible();
+  const [visiableButton, setVisiableButton] = useState(false);
+
   const navigate = useNavigate();
 
   const onExitButtonClick = useCallback(() => {
     auth.signOut();
   }, [auth, navigate]);
 
-  const onSaveButtonClick = useCallback(() => {
-    auth.saveUser(formUser);
-  }, [auth, navigate]);
-
-  if (!auth.user) {
-    return <Navigate to={"/login/"} />;
-  } else {
-  }
-
-  const onIconClick = () => {
-    setTimeout(() => passwordRef.current.focus(), 0);
-  };
-
   const onChange = (e) => {
-    setFormUser({ ...formUser, [e.target.name]: e.target.value });
-    setVisiable(true);
+    setUser({ ...user, [e.target.name]: e.target.value });
+    if (auth.user !== user) {
+      setVisiableButton(true);
+    }
   };
+
+  const undo = useCallback(() => {
+    setVisiableButton(false);
+    setUser(auth.user);
+  });
+
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      auth.saveUser(user, "auth/user");
+      setVisiableButton(false);
+    },
+    [user, navigate]
+  );
 
   return (
     <div className={style.profile_box}>
@@ -88,59 +86,80 @@ export function Profile() {
           В это разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <div className={style.profile_info_box}>
-        <Input
-          type={"text"}
-          placeholder={"Имя"}
-          onChange={onChange}
-          icon={"EditIcon"}
-          value={formUser.name}
-          name={"name"}
-          error={false}
-          ref={nameRef}
-          errorText={"Ошибка"}
-          size={"default"}
-          extraClass="ml-1"
-        />
-        <Input
-          type={"email"}
-          placeholder={"Логин"}
-          onChange={onChange}
-          icon={"EditIcon"}
-          value={formUser.email}
-          name={"email"}
-          error={false}
-          ref={emailRef}
-          onIconClick={onIconClick}
-          errorText={"Ошибка"}
-          size={"default"}
-          extraClass="ml-1"
-        />
-        <Input
-          type={"password"}
-          placeholder={"Пароль"}
-          onChange={onChange}
-          icon={"EditIcon"}
-          value={formUser.password}
-          name={"password"}
-          error={false}
-          ref={passwordRef}
-          onIconClick={onIconClick}
-          errorText={"Ошибка"}
-          size={"default"}
-          extraClass="ml-1"
-        />
+      <div>
+        <form onSubmit={onSubmit} className={style.profile_info_box}>
+          <Input
+            type={"text"}
+            placeholder={"Имя"}
+            onChange={onChange}
+            icon={"EditIcon"}
+            value={user.name}
+            name={"name"}
+            error={false}
+            errorText={"Ошибка"}
+            size={"default"}
+            extraClass="ml-1"
+          />
+          <Input
+            type={"email"}
+            placeholder={"Логин"}
+            onChange={onChange}
+            icon={"EditIcon"}
+            value={user.email}
+            name={"email"}
+            error={false}
+            errorText={"Ошибка"}
+            size={"default"}
+            extraClass="ml-1"
+          />
+          {!visible ? (
+            <Input
+              type={"password"}
+              placeholder={"Пароль"}
+              onChange={onChange}
+              icon={"ShowIcon"}
+              value={user.password}
+              name={"password"}
+              error={false}
+              onIconClick={onVisible}
+              errorText={"Ошибка"}
+              size={"default"}
+              extraClass="ml-1"
+              required={false}
+            />
+          ) : (
+            <Input
+              type={"text"}
+              placeholder={"Пароль"}
+              onChange={onChange}
+              icon={"HideIcon"}
+              value={user.password}
+              name={"password"}
+              error={false}
+              onIconClick={onVisible}
+              errorText={"Ошибка"}
+              size={"default"}
+              extraClass="ml-1"
+              required={false}
+            />
+          )}
 
-        {visiable && (
-          <Button
-            htmlType="button"
-            type="primary"
-            size="large"
-            onClick={onSaveButtonClick}
-          >
-            Сохранить
-          </Button>
-        )}
+          {visiableButton && (
+            <div className={style.profile_button_box}>
+              <Button htmlType="submit" type="primary" size="large">
+                Сохранить
+              </Button>
+              <Button
+                htmlType="button"
+                type="secondary"
+                size="large"
+                onClick={undo}
+              >
+                Отмена
+              </Button>
+            </div>
+          )}
+        </form>
       </div>
     </div>
   );

@@ -1,17 +1,17 @@
 import style from "./Ingredient.module.css";
-import IngredientDetails from "./IngredientDetails/IngredientDetails";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import Modal from "../../../Modal/Modal";
-import { useModal } from "../../../../hooks/usemodal";
-import { ingredientType } from "../../../../services/utils/types";
+import Modal from "../Modal/Modal";
+import { useModal } from "../../hooks/usemodal";
+import { ingredientType } from "../../services/utils/types";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_INGREDIENT,
   REMOVE_INGREDIENT,
-} from "../../../../services/actions/ingredient";
+} from "../../services/actions/ingredient";
 import { useEffect } from "react";
 import { useDrag } from "react-dnd";
 import { useLocation, Link } from "react-router-dom";
@@ -53,7 +53,7 @@ function Ingredient({ item }) {
   }, [isModalOpen]);
 
   return (
-    <>
+    <div onClick={openModal}>
       <Link
         key={item._id}
         to={{
@@ -61,9 +61,8 @@ function Ingredient({ item }) {
           state: { background: location },
         }}
         className={style.ingredient_link}
-        onClick={openModal}
       >
-        <div /* onClick={openModal} */ ref={dragRef} style={{ opacity }}>
+        <div ref={dragRef} style={{ opacity }}>
           <div className={style.ingredient_info}>
             {!count == 0 && (
               <Counter count={count} size="default" extraClass="m-1" />
@@ -86,7 +85,7 @@ function Ingredient({ item }) {
           <IngredientDetails />
         </Modal>
       )} */}
-    </>
+    </div>
   );
 }
 

@@ -1,4 +1,5 @@
 import { request } from "../utils/api";
+import { getCookie } from "../utils/utils";
 
 export const IMPORT_ORDER_API = "IMPORT_ORDER_API";
 export const IMPORT_ORDER_API_SUCCESS = "IMPORT_ORDER_API_SUCCESS";
@@ -10,6 +11,7 @@ export function getOrder(orderElementsID) {
     body: JSON.stringify(orderElementsID),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
+      authorization: getCookie("accessToken"),
     },
   };
 

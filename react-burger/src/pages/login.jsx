@@ -2,19 +2,16 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useRef, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import style from "./login.module.css";
-import { Navigate, Link, useNavigate } from "react-router-dom";
-import { fetchWithRefresh } from "../services/utils/api";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../services/utils/auth";
+import { useVisible } from "../hooks/visible";
 
 export function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
-  const onIconClick = () => {
-    setTimeout(() => passwordRef.current.focus(), 0);
-  };
+  const { visible, onVisible } = useVisible();
+
   const navigate = useNavigate();
 
   const onChange = (e) => {
@@ -23,53 +20,63 @@ export function Login() {
 
   const auth = useAuth();
 
-  const onButtonClick = useCallback(() => {
-    auth.signIn(user);
-  }, [user, navigate]);
-
-  if (auth.user) {
-    return <Navigate to={"/"} />;
-  }
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      auth.signIn(user, "auth/login");
+    },
+    [user, navigate]
+  );
 
   return (
     <div>
       <div className={style.login_box}>
         <h2>Вход</h2>
-        <Input
-          type={"email"}
-          placeholder={"E-mail"}
-          onChange={onChange}
-          value={user.email}
-          name={"email"}
-          error={false}
-          ref={emailRef}
-          errorText={"Ошибка"}
-          size={"default"}
-          extraClass="ml-1"
-        />
-        <Input
-          type={"password"}
-          placeholder={"Пароль"}
-          onChange={onChange}
-          icon={"ShowIcon"}
-          value={user.password}
-          name={"password"}
-          error={false}
-          ref={passwordRef}
-          onIconClick={onIconClick}
-          errorText={"Ошибка"}
-          size={"default"}
-          extraClass="ml-1"
-        />
-
-        <Button
-          htmlType="button"
-          type="primary"
-          size="large"
-          onClick={onButtonClick}
-        >
-          Войти
-        </Button>
+        <form onSubmit={onSubmit} className={style.form}>
+          <Input
+            type={"email"}
+            placeholder={"E-mail"}
+            onChange={onChange}
+            value={user.email}
+            name={"email"}
+            error={false}
+            errorText={"Ошибка"}
+            size={"default"}
+            extraClass="ml-1"
+          />
+          {!visible ? (
+            <Input
+              type={"password"}
+              placeholder={"Пароль"}
+              onChange={onChange}
+              icon={"ShowIcon"}
+              value={user.password}
+              name={"password"}
+              error={false}
+              onIconClick={onVisible}
+              errorText={"Ошибка"}
+              size={"default"}
+              extraClass="ml-1"
+            />
+          ) : (
+            <Input
+              type={"text"}
+              placeholder={"Пароль"}
+              onChange={onChange}
+              icon={"HideIcon"}
+              value={user.password}
+              name={"password"}
+              error={false}
+              onIconClick={onVisible}
+              errorText={"Ошибка"}
+              size={"default"}
+              extraClass="ml-1"
+            />
+          )}
+          <Button type="primary" size="large" htmlType="submit">
+            Войти
+          </Button>
+        </form>
       </div>
       <div className={`${style.login_text} mt-20`}>
         <div>

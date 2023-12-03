@@ -2,104 +2,94 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 import style from "./login.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchWithRefresh, saveTokens } from "../services/utils/api";
 import { useDispatch } from "react-redux";
 import { ADD_USER } from "../services/actions/user";
+import { useVisible } from "../hooks/visible";
+import { useAuth } from "../services/utils/auth";
 
 export function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
-  const nameRef = useRef(null);
-  const onIconClick = () => {
-    setTimeout(() => passwordRef.current.focus(), 0);
-  };
+  const [user, setUser] = useState({ email: "", password: "", name: "" });
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const onButtonClick = async () => {
-    const jsonPost = {
-      email: email,
-      password: password,
-      name: name,
-    };
+  const { visible, onVisible } = useVisible();
+  const auth = useAuth();
 
-    const post = {
-      method: "POST",
-      body: JSON.stringify(jsonPost),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    };
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      auth.signIn(user, "auth/register");
+    },
+    [user]
+  );
 
-    try {
-      const result = await fetchWithRefresh("auth/register", post);
-
-      if (result.success) {
-        navigate("/login");
-      }
-    } catch (error) {
-      alert("Не получилось зарегистрироваться!");
-      console.log(error);
-    }
+  const onChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
   };
 
   return (
     <div>
       <div className={style.login_box}>
         <h2>Регистрация</h2>
-        <Input
-          type={"text"}
-          placeholder={"Имя"}
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          name={"name"}
-          error={false}
-          ref={nameRef}
-          errorText={"Ошибка"}
-          size={"default"}
-          extraClass="ml-1"
-        />
-        <Input
-          type={"email"}
-          placeholder={"E-mail"}
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          name={"name"}
-          error={false}
-          ref={emailRef}
-          errorText={"Ошибка"}
-          size={"default"}
-          extraClass="ml-1"
-        />
-        <Input
-          type={"password"}
-          placeholder={"Пароль"}
-          onChange={(e) => setPassword(e.target.value)}
-          icon={"ShowIcon"}
-          value={password}
-          name={"name"}
-          error={false}
-          ref={passwordRef}
-          onIconClick={onIconClick}
-          errorText={"Ошибка"}
-          size={"default"}
-          extraClass="ml-1"
-        />
+        <form onSubmit={onSubmit} className={style.form}>
+          <Input
+            type={"text"}
+            placeholder={"Имя"}
+            onChange={onChange}
+            value={user.name}
+            name={"name"}
+            error={false}
+            errorText={"Ошибка"}
+            size={"default"}
+            extraClass="ml-1"
+          />
+          <Input
+            type={"email"}
+            placeholder={"E-mail"}
+            onChange={onChange}
+            value={user.email}
+            name={"email"}
+            error={false}
+            errorText={"Ошибка"}
+            size={"default"}
+            extraClass="ml-1"
+          />
+          {!visible ? (
+            <Input
+              type={"password"}
+              placeholder={"Пароль"}
+              onChange={onChange}
+              icon={"ShowIcon"}
+              value={user.password}
+              name={"password"}
+              error={false}
+              errorText={"Ошибка"}
+              size={"default"}
+              extraClass="ml-1"
+              onIconClick={onVisible}
+            />
+          ) : (
+            <Input
+              type={"text"}
+              placeholder={"Пароль"}
+              onChange={onChange}
+              icon={"HideIcon"}
+              value={user.password}
+              name={"password"}
+              error={false}
+              errorText={"Ошибка"}
+              size={"default"}
+              extraClass="ml-1"
+              onIconClick={onVisible}
+            />
+          )}
 
-        <Button
-          htmlType="button"
-          type="primary"
-          size="large"
-          onClick={onButtonClick}
-        >
-          Зарегистрироваться
-        </Button>
+          <Button htmlType="submit" type="primary" size="large">
+            Зарегистрироваться
+          </Button>
+        </form>
       </div>
       <div className={`${style.login_text} mt-20`}>
         <div>

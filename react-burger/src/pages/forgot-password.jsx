@@ -2,71 +2,61 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import style from "./login.module.css";
 import { Link, useNavigate, Navigate } from "react-router-dom";
-import { request } from "../services/utils/api";
 import { useAuth } from "../services/utils/auth";
 
 export function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const emailRef = useRef(null);
   const navigate = useNavigate();
-
   const auth = useAuth();
 
-  if (auth.user) {
-    return <Navigate to={"/profile/"} />;
-  }
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (email.length > 3) {
+        const jsonPost = {
+          email: email,
+        };
 
-  const onButtonClick = async () => {
-    const jsonPost = {
-      email: email,
-    };
-
-    const post = {
-      method: "POST",
-      body: JSON.stringify(jsonPost),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    };
-
-    try {
-      const result = await request("password-reset", post);
-      if (result.success) {
-        navigate("/reset-password/", { email: email });
+        const chars =
+          "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
+        const random = Array.from(
+          { length: 20 },
+          () => chars[Math.floor(Math.random() * chars.length)]
+        );
+        const randomString = random.join("");
+        auth.forgotPassword(jsonPost, randomString);
+        navigate(`/reset-password/${randomString}`);
+      } else {
+        alert("Введите адрес почты!");
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    },
+    [email, navigate]
+  );
 
   return (
     <div>
       <div className={style.login_box}>
         <h2>Восстановление пароля</h2>
-        <Input
-          type={"email"}
-          placeholder={"Укажите E-mail"}
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          name={"email"}
-          error={false}
-          ref={emailRef}
-          errorText={"Ошибка"}
-          size={"default"}
-          extraClass="ml-1"
-        />
+        <form onSubmit={onSubmit} className={style.form}>
+          <Input
+            type={"email"}
+            placeholder={"Укажите E-mail"}
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            name={"email"}
+            error={false}
+            errorText={"Ошибка"}
+            size={"default"}
+            extraClass="ml-1"
+          />
 
-        <Button
-          htmlType="button"
-          type="primary"
-          size="large"
-          onClick={onButtonClick}
-        >
-          Восстановить
-        </Button>
+          <Button htmlType="submit" type="primary" size="large">
+            Восстановить
+          </Button>
+        </form>
       </div>
       <div className={`${style.login_text} mt-20`}>
         <div>

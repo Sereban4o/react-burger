@@ -1,11 +1,11 @@
-import AppHeader from "./AppHeader/AppHeader";
+import AppHeader from "../AppHeader/AppHeader";
 import style from "./App.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getIngredients } from "../../services/actions/ingredients";
 
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import {
   ForgotPassword,
   Login,
@@ -14,56 +14,121 @@ import {
   Register,
   ResetPassword,
 } from "../../pages";
-import { ProvideAuth } from "../../services/utils/auth";
-import IngredientDetails from "./BurgerIngredients/Ingredient/IngredientDetails/IngredientDetails";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 import { useModal } from "../../hooks/usemodal";
+import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
+import { getCookie } from "../../services/utils/utils";
+import { useAuth } from "../../services/utils/auth";
 
 function App() {
   const dispatch = useDispatch();
-  const ingredients = useSelector((state) => state.ingredients);
+  const auth = useAuth();
 
   useEffect(() => {
-    if (!ingredients.length) dispatch(getIngredients());
+    const userLS = getCookie("user");
+
+    if (userLS) {
+      auth.signIn(JSON.parse(userLS));
+    }
+  }, []);
+
+  useEffect(() => {
+    dispatch(getIngredients());
   }, [dispatch]);
 
   const { view } = useSelector((state) => state.modal);
-  const { closeModal } = useModal();
+  const { isModalOpen, closeModal } = useModal();
 
   return (
-    <ProvideAuth>
-      <div className={style.app}>
-        <AppHeader />
-        <main className="center">
-          <Routes>
-            <Route path="/" exact element={<MainPage />} />
+    <div className={style.app}>
+      <AppHeader />
+      <main className="center">
+        <Routes>
+          <Route path="/" exact element={<MainPage />} />
 
-            <Route path="/login/" element={<Login />} />
-            <Route path="/register/" element={<Register />} />
-            <Route path="/forgot-password/" element={<ForgotPassword />} />
-            <Route path="/reset-password/" element={<ResetPassword />} />
+          <Route
+            path="/login/"
+            element={
+              <ProtectedRoute onlyUnAuth={true}>
+                <Login />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/register/"
+            element={
+              <ProtectedRoute onlyUnAuth={true}>
+                <Register />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/forgot-password/"
+            element={
+              <ProtectedRoute onlyUnAuth={true}>
+                <ForgotPassword />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reset-password/"
+            element={
+              <ProtectedRoute onlyUnAuth={true}>
+                <ResetPassword />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reset-password/:token"
+            element={
+              <ProtectedRoute onlyUnAuth={true}>
+                <ResetPassword />
+              </ProtectedRoute>
+            }
+          />
 
-            <Route path="/profile/" exact element={<Profile />} />
-            <Route path="/profile/orders/" element={<Profile />} />
-            <Route path="/profile/orders/:number" element={<Profile />} />
-            {!view && (
-              <Route path="/ingredient/:id/" element={<IngredientDetails />} />
-            )}
-            {view && (
-              <Route
-                path="/ingredient/:id/"
-                element={
-                  <Modal onClick={closeModal}>
-                    <IngredientDetails />
-                  </Modal>
-                }
-              />
-            )}
-            <Route render={() => <h1>Страница не найдена</h1>} />
-          </Routes>
-        </main>
-      </div>
-    </ProvideAuth>
+          <Route
+            path="/profile/"
+            exact
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/orders/"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/orders/:number"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          {view ? (
+            <Route
+              path="/ingredient/:id/"
+              element={
+                <Modal onClick={closeModal} isModalOpen={isModalOpen}>
+                  <IngredientDetails />
+                </Modal>
+              }
+            />
+          ) : (
+            <Route path="/ingredient/:id/" element={<IngredientDetails />} />
+          )}
+          <Route render={() => <h1>Страница не найдена</h1>} />
+        </Routes>
+      </main>
+    </div>
   );
 }
 

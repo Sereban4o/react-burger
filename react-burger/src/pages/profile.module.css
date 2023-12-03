@@ -25,3 +25,8 @@
   height: 48px;
   color: #8585ad;
 }
+
+.profile_button_box {
+  display: flex;
+  justify-content: center;
+}

@@ -1,5 +1,6 @@
 import {
   ADD_INGREDIENTS,
+  CLEAR_INGREDIENTS,
   REMOVE_INGREDIENTS,
   UPDATE_INGREDIENTS,
 } from "../actions/bugrerIngredients";
@@ -31,6 +32,9 @@ export const bugrerIngredientsReducer = (state = initialState, action) => {
       return { ...state, ingredients: action.newCards };
     }
 
+    case CLEAR_INGREDIENTS: {
+      return { initialState };
+    }
     default: {
       return state;
     }

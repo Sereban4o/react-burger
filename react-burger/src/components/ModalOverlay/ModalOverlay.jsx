@@ -2,13 +2,15 @@ import style from "./ModalOverlay.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-function ModalOverlay({ onClick, isModalOpen, children }) {
+function ModalOverlay({ onClick, children }) {
   const modal = useRef();
+  const { view } = useSelector((state) => state.modal);
 
   useEffect(() => {
     const handleClick = (e) => {
-      if (!isModalOpen) return;
+      if (!view) return;
 
       if (e.target.children[0] === modal.current) {
         onClick();
@@ -22,7 +24,7 @@ function ModalOverlay({ onClick, isModalOpen, children }) {
 
   useEffect(() => {
     const handleKey = (e) => {
-      if (!isModalOpen) return;
+      if (!view) return;
 
       if (e.key == "Escape") {
         onClick();
@@ -40,6 +42,7 @@ function ModalOverlay({ onClick, isModalOpen, children }) {
         <button className={`${style.modal_button} mr-10 mt-15`}>
           <CloseIcon type="primary" onClick={onClick} />
         </button>
+
         {children}
       </div>
     </div>
@@ -47,7 +50,6 @@ function ModalOverlay({ onClick, isModalOpen, children }) {
 }
 
 ModalOverlay.propTypes = {
-  isModalOpen: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
   children: PropTypes.object.isRequired,
 };

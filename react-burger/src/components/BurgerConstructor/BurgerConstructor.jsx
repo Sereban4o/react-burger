@@ -1,46 +1,43 @@
-import OrderDetails from "./OrderDetails/OrderDetails";
+import OrderDetails from "../OrderDetails/OrderDetails";
 import style from "./BurgerConstructor.module.css";
 import {
   ConstructorElement,
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useModal } from "../../../hooks/usemodal";
-import Modal from "../../Modal/Modal";
+import { useModal } from "../../hooks/usemodal";
+import Modal from "../Modal/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_INGREDIENTS,
   UPDATE_INGREDIENTS,
-} from "../../../services/actions/bugrerIngredients";
+} from "../../services/actions/bugrerIngredients";
 import { useCallback, useEffect } from "react";
-import { getOrder } from "../../../services/actions/order";
+import { getOrder } from "../../services/actions/order";
 import { useDrop } from "react-dnd";
 import { v4 as uuid } from "uuid";
-import IngredientConstructor from "./IngredientConstructor/IngredientConstructor";
-import { useAuth } from "../../../services/utils/auth";
+import IngredientConstructor from "../IngredientConstructor/IngredientConstructor";
+import { useAuth } from "../../services/utils/auth";
 import { useNavigate } from "react-router-dom";
 
 function BurgerConstructor() {
-  const { isModalOpen, openModal, closeModal } = useModal();
+  const { openModal, closeModal } = useModal();
   const dispatch = useDispatch();
   const { buns, ingredients } = useSelector((state) => state.bugrerIngredients);
   const auth = useAuth();
   let summOrder = 0;
   let orderElementsID = { ingredients: [] };
+  let orderBun = null;
   const navigate = useNavigate();
   buns.map((el) => {
     summOrder = (summOrder + el.price) * 2;
-    orderElementsID.ingredients = [
-      ...orderElementsID.ingredients,
-      el._id,
-      el._id,
-    ];
+    orderBun = el._id;
   });
   ingredients.map((el) => {
     summOrder = summOrder + el.price;
     orderElementsID.ingredients = [...orderElementsID.ingredients, el._id];
   });
-
+  const { view } = useSelector((state) => state.modal);
   const [{ isHover }, dropRef] = useDrop({
     accept: "ingredient",
     drop(item) {
@@ -69,23 +66,23 @@ function BurgerConstructor() {
   );
 
   useEffect(() => {
-    if (isModalOpen) dispatch(getOrder(orderElementsID));
-  }, [isModalOpen]);
+    if (view) {
+      orderElementsID.ingredients.unshift(orderBun);
+      orderElementsID.ingredients.push(orderBun);
 
-  //Техдолг. Нужно сделать вывод компонента с сообщением пользователю.
-  const alertCommand = () => {
-    alert(`Не выбраны ингредиенты`);
+      dispatch(getOrder(orderElementsID));
+    }
+  }, [view]);
+
+  const handleOrderButtonClick = () => {
+    if (!auth.user) {
+      navigate("/login/");
+    } else if (orderElementsID.ingredients.length > 0 && orderBun) {
+      openModal();
+    } else {
+      alert(`Не выбраны ингредиенты`);
+    }
   };
-
-  const goToLogin = () => {
-    navigate("/login/");
-  };
-
-  const command = !auth.user
-    ? goToLogin
-    : orderElementsID.ingredients.length > 0
-    ? openModal
-    : alertCommand;
 
   return (
     <section className={`${style.content_box} pt-25`}>
@@ -140,13 +137,13 @@ function BurgerConstructor() {
           htmlType="button"
           type="primary"
           size="medium"
-          onClick={command}
+          onClick={handleOrderButtonClick}
         >
           Оформить заказ
         </Button>
       </div>
-      {isModalOpen && (
-        <Modal onClick={closeModal} isModalOpen={isModalOpen}>
+      {view && (
+        <Modal onClick={closeModal}>
           <OrderDetails orderElementsID={orderElementsID} />
         </Modal>
       )}

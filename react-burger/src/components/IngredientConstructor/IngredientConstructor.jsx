@@ -6,8 +6,8 @@ import style from "./IngredientConstructor.module.css";
 import { useRef } from "react";
 import { useDrop, useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
-import { REMOVE_INGREDIENTS } from "../../../../services/actions/bugrerIngredients";
-import { ingredientType } from "../../../../services/utils/types";
+import { REMOVE_INGREDIENTS } from "../../services/actions/bugrerIngredients";
+import { ingredientType } from "../../services/utils/types";
 import PropTypes from "prop-types";
 
 function IngredientConstructor({ item, index, moveItem }) {

@@ -16,3 +16,11 @@
   gap: 16px;
   align-items: center;
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  align-items: center;
+}
