@@ -23,7 +23,7 @@ export function Login() {
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      auth.signIn(user, "auth/login");
+      auth.signIn(user);
     },
     [user, navigate]
   );

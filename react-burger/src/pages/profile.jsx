@@ -11,7 +11,11 @@ import { useVisible } from "../hooks/visible";
 export function Profile() {
   const auth = useAuth();
 
-  const [user, setUser] = useState(auth.user);
+  const [user, setUser] = useState({
+    name: auth.user.name,
+    email: auth.user.email,
+    password: "",
+  });
 
   const { visible, onVisible } = useVisible();
   const [visiableButton, setVisiableButton] = useState(false);
@@ -24,20 +28,23 @@ export function Profile() {
 
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
-    if (auth.user !== user) {
-      setVisiableButton(true);
-    }
+
+    setVisiableButton(true);
   };
 
   const undo = useCallback(() => {
     setVisiableButton(false);
-    setUser(auth.user);
+    setUser({
+      name: auth.user.name,
+      email: auth.user.email,
+      password: "",
+    });
   });
 
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      auth.saveUser(user, "auth/user");
+      auth.saveUser({ email: user.email, name: user.name });
       setVisiableButton(false);
     },
     [user, navigate]

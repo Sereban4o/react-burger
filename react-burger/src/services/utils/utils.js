@@ -35,3 +35,13 @@ export function setCookie(name, value, props) {
 export function deleteCookie(name) {
   setCookie(name, null, { expires: -1 });
 }
+
+export function randomString() {
+  const chars =
+    "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
+  const random = Array.from(
+    { length: 20 },
+    () => chars[Math.floor(Math.random() * chars.length)]
+  );
+  return random.join("");
+}

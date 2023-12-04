@@ -16,7 +16,6 @@ export function getIngredients() {
         data: dataAPI.data,
       });
     } catch (error) {
-      console.log(error);
       dispatch({ type: IMPORT_API_FAILED });
     }
   };

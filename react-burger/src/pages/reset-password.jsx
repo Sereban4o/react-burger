@@ -4,11 +4,11 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useCallback, useRef, useState, useEffect } from "react";
 import style from "./login.module.css";
-import { Navigate, Link, useNavigate, useParams } from "react-router-dom";
-import { request } from "../services/utils/api";
+import { Link, useNavigate, useParams } from "react-router-dom";
+
 import { useAuth } from "../services/utils/auth";
 import { useVisible } from "../hooks/visible";
-import { useSelector } from "react-redux";
+
 import { getCookie } from "../services/utils/utils";
 
 export function ResetPassword({}) {

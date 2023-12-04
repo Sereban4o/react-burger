@@ -2,12 +2,9 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useRef, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import style from "./login.module.css";
-import { Link, useNavigate } from "react-router-dom";
-import { fetchWithRefresh, saveTokens } from "../services/utils/api";
-import { useDispatch } from "react-redux";
-import { ADD_USER } from "../services/actions/user";
+import { Link } from "react-router-dom";
 import { useVisible } from "../hooks/visible";
 import { useAuth } from "../services/utils/auth";
 
@@ -20,7 +17,7 @@ export function Register() {
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      auth.signIn(user, "auth/register");
+      auth.signIn(user);
     },
     [user]
   );

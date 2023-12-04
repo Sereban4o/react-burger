@@ -1,10 +1,8 @@
 import style from "./Ingredient.module.css";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import Modal from "../Modal/Modal";
 import { useModal } from "../../hooks/usemodal";
 import { ingredientType } from "../../services/utils/types";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +15,7 @@ import { useDrag } from "react-dnd";
 import { useLocation, Link } from "react-router-dom";
 
 function Ingredient({ item }) {
-  const { isModalOpen, openModal, closeModal } = useModal();
+  const { isModalOpen, openModal } = useModal();
   const { buns, ingredients } = useSelector((state) => state.bugrerIngredients);
   const location = useLocation();
 
@@ -80,11 +78,6 @@ function Ingredient({ item }) {
           </div>
         </div>
       </Link>
-      {/* {isModalOpen && (
-        <Modal onClick={closeModal} isModalOpen={isModalOpen}>
-          <IngredientDetails />
-        </Modal>
-      )} */}
     </div>
   );
 }

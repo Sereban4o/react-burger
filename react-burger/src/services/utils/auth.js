@@ -1,27 +1,32 @@
 import { useNavigate } from "react-router-dom";
 import { getForgotPassword, getResetPassword } from "../actions/resetPassword";
-import { getUser, signOutUser } from "../actions/user";
-import { deleteCookie, getCookie, setCookie } from "./utils";
+import {
+  getUserAPI,
+  saveUserAPI,
+  signInAPI,
+  signOutAPI,
+} from "../actions/user";
+import { deleteCookie, setCookie } from "./utils";
 import { useDispatch, useSelector } from "react-redux";
 
 export function useAuth() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const signIn = async (user, url = "auth/login") => {
-    // console.log(user);
-    dispatch(getUser(user, url, "POST"));
+  const signIn = async (user) => {
+    dispatch(signInAPI(user));
   };
 
   const signOut = async () => {
-    dispatch(signOutUser(user));
+    dispatch(signOutAPI(user));
   };
 
-  const saveUser = async (user, url) => {
-    dispatch(getUser(user, url, "PATCH"));
+  const getUser = async () => {
+    dispatch(getUserAPI());
+  };
 
-    const json = { email: user.email, password: user.password };
-    dispatch(getUser(json, "auth/login", "POST"));
+  const saveUser = async (user) => {
+    dispatch(saveUserAPI(user));
   };
 
   const forgotPassword = async (json, randomString) => {
@@ -39,6 +44,7 @@ export function useAuth() {
 
   return {
     user,
+    getUser,
     saveUser,
     signIn,
     signOut,

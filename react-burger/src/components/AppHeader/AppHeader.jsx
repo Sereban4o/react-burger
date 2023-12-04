@@ -5,12 +5,12 @@ import {
   Logo,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from "./AppHeader.module.css";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../services/utils/auth";
-import { useState } from "react";
 
 function AppHeader() {
   const auth = useAuth();
+
   return (
     <header className={`${style.app__header} mt-10 center`}>
       <NavLink

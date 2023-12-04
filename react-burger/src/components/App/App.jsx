@@ -1,10 +1,8 @@
 import AppHeader from "../AppHeader/AppHeader";
 import style from "./App.module.css";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getIngredients } from "../../services/actions/ingredients";
-
 import { Routes, Route } from "react-router-dom";
 import {
   ForgotPassword,
@@ -18,25 +16,13 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 import { useModal } from "../../hooks/usemodal";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
-import { getCookie } from "../../services/utils/utils";
-import { useAuth } from "../../services/utils/auth";
 
 function App() {
   const dispatch = useDispatch();
-  const auth = useAuth();
-
-  useEffect(() => {
-    const userLS = getCookie("user");
-
-    if (userLS) {
-      auth.signIn(JSON.parse(userLS));
-    }
-  }, []);
 
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
-
   const { view } = useSelector((state) => state.modal);
   const { isModalOpen, closeModal } = useModal();
 

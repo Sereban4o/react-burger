@@ -11,7 +11,7 @@ export function getForgotPassword(json) {
     dispatch({ type: REQUEST_FORGOT_PASSWORD_API });
 
     try {
-      const post = {
+      const options = {
         method: "POST",
         body: JSON.stringify(json),
         headers: {
@@ -19,7 +19,7 @@ export function getForgotPassword(json) {
         },
       };
 
-      const dataAPI = await request("password-reset", post);
+      await request("password-reset", options);
 
       dispatch({
         type: REQUEST_FORGOT_PASSWORD_API_SUCCESS,
@@ -38,15 +38,14 @@ export function getResetPassword(json) {
     dispatch({ type: REQUEST_FORGOT_PASSWORD_API });
 
     try {
-      const post = {
+      const options = {
         method: "POST",
         body: JSON.stringify(json),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
       };
-      console.log(post);
-      const dataAPI = await request("password-reset/reset", post);
+      await request("password-reset/reset", options);
 
       dispatch({
         type: REQUEST_FORGOT_PASSWORD_API_SUCCESS,

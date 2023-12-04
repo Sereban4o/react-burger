@@ -23,21 +23,11 @@ import { useNavigate } from "react-router-dom";
 function BurgerConstructor() {
   const { openModal, closeModal } = useModal();
   const dispatch = useDispatch();
-  const { buns, ingredients } = useSelector((state) => state.bugrerIngredients);
-  const auth = useAuth();
-  let summOrder = 0;
-  let orderElementsID = { ingredients: [] };
-  let orderBun = null;
   const navigate = useNavigate();
-  buns.map((el) => {
-    summOrder = (summOrder + el.price) * 2;
-    orderBun = el._id;
-  });
-  ingredients.map((el) => {
-    summOrder = summOrder + el.price;
-    orderElementsID.ingredients = [...orderElementsID.ingredients, el._id];
-  });
+  const auth = useAuth();
+  const { buns, ingredients } = useSelector((state) => state.bugrerIngredients);
   const { view } = useSelector((state) => state.modal);
+
   const [{ isHover }, dropRef] = useDrop({
     accept: "ingredient",
     drop(item) {
@@ -65,6 +55,30 @@ function BurgerConstructor() {
     [ingredients, dispatch]
   );
 
+  const handleOrderButtonClick = () => {
+    if (!auth.user) {
+      return navigate("/login/");
+    }
+    if (!orderBun) {
+      return alert(`Нужно выбрать булки!`);
+    }
+    openModal();
+  };
+
+  let summOrder = 0;
+  let orderElementsID = { ingredients: [] };
+  let orderBun = null;
+
+  buns.map((el) => {
+    summOrder = (summOrder + el.price) * 2;
+    orderBun = el._id;
+  });
+
+  ingredients.map((el) => {
+    summOrder = summOrder + el.price;
+    orderElementsID.ingredients = [...orderElementsID.ingredients, el._id];
+  });
+
   useEffect(() => {
     if (view) {
       orderElementsID.ingredients.unshift(orderBun);
@@ -73,16 +87,6 @@ function BurgerConstructor() {
       dispatch(getOrder(orderElementsID));
     }
   }, [view]);
-
-  const handleOrderButtonClick = () => {
-    if (!auth.user) {
-      navigate("/login/");
-    } else if (orderElementsID.ingredients.length > 0 && orderBun) {
-      openModal();
-    } else {
-      alert(`Не выбраны ингредиенты`);
-    }
-  };
 
   return (
     <section className={`${style.content_box} pt-25`}>

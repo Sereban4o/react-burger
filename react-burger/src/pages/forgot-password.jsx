@@ -6,6 +6,7 @@ import { useCallback, useRef, useState } from "react";
 import style from "./login.module.css";
 import { Link, useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "../services/utils/auth";
+import { randomString } from "../services/utils/utils";
 
 export function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -20,15 +21,9 @@ export function ForgotPassword() {
           email: email,
         };
 
-        const chars =
-          "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
-        const random = Array.from(
-          { length: 20 },
-          () => chars[Math.floor(Math.random() * chars.length)]
-        );
-        const randomString = random.join("");
-        auth.forgotPassword(jsonPost, randomString);
-        navigate(`/reset-password/${randomString}`);
+        const random = randomString();
+        auth.forgotPassword(jsonPost, random);
+        navigate(`/reset-password/${random}`);
       } else {
         alert("Введите адрес почты!");
       }
