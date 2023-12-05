@@ -16,15 +16,23 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 import { useModal } from "../../hooks/usemodal";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
+import { useAuth } from "../../services/utils/auth";
 
 function App() {
   const dispatch = useDispatch();
+  const auth = useAuth();
+
+  useEffect(() => {
+    if (!auth.isAuthChecked) {
+      auth.getUser();
+    }
+  }, [auth.isAuthChecked]);
 
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
   const { view } = useSelector((state) => state.modal);
-  const { isModalOpen, closeModal } = useModal();
+  const { closeModal } = useModal();
 
   return (
     <div className={style.app}>
@@ -103,7 +111,7 @@ function App() {
             <Route
               path="/ingredient/:id/"
               element={
-                <Modal onClick={closeModal} isModalOpen={isModalOpen}>
+                <Modal onClick={closeModal}>
                   <IngredientDetails />
                 </Modal>
               }

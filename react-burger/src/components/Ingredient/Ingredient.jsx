@@ -15,7 +15,8 @@ import { useDrag } from "react-dnd";
 import { useLocation, Link } from "react-router-dom";
 
 function Ingredient({ item }) {
-  const { isModalOpen, openModal } = useModal();
+  const { openModal } = useModal();
+
   const { buns, ingredients } = useSelector((state) => state.bugrerIngredients);
   const location = useLocation();
 
@@ -26,8 +27,6 @@ function Ingredient({ item }) {
 
   const count = arrauBunsFilter.length * 2 + arrauIngredientsFilter.length;
 
-  const dispatch = useDispatch();
-
   const [{ opacity }, dragRef] = useDrag({
     type: "ingredient",
     item: { ...item },
@@ -35,20 +34,6 @@ function Ingredient({ item }) {
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
   });
-
-  useEffect(() => {
-    if (isModalOpen) {
-      dispatch({
-        type: ADD_INGREDIENT,
-        item: item,
-      });
-    } else {
-      dispatch({
-        type: REMOVE_INGREDIENT,
-        item: item,
-      });
-    }
-  }, [isModalOpen]);
 
   return (
     <div onClick={openModal}>

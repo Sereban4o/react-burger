@@ -40,10 +40,11 @@ export function useAuth() {
     navigate("/");
   };
 
-  const { user } = useSelector((state) => state.user);
+  const { user, isAuthChecked } = useSelector((state) => state.user);
 
   return {
     user,
+    isAuthChecked,
     getUser,
     saveUser,
     signIn,

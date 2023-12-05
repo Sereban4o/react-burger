@@ -30,7 +30,7 @@ export const userReducer = (state = initialState, action) => {
       };
     }
     case REMOVE_USER: {
-      return { initialState };
+      return initialState;
     }
 
     case GET_USER_FAILED: {

@@ -110,7 +110,7 @@ export function signOutAPI() {
 export function saveUserAPI(user) {
   return async function (dispatch) {
     dispatch({ type: GET_USER_REQEST });
-    console.log(user);
+
     try {
       const options = {
         method: "PATCH",

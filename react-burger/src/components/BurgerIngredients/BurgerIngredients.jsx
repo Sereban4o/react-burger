@@ -56,7 +56,7 @@ function BurgerIngredients() {
         <div ref={bunsRef}>
           <p className="text text_type_main-medium mt-10">Булки</p>
           <div className={style.content_box_box}>
-            {bun.map((el, index) => (
+            {bun.map((el) => (
               <Ingredient item={el} key={el._id} />
             ))}
           </div>

@@ -12,7 +12,7 @@ import {
   ADD_INGREDIENTS,
   UPDATE_INGREDIENTS,
 } from "../../services/actions/bugrerIngredients";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { getOrder } from "../../services/actions/order";
 import { useDrop } from "react-dnd";
 import { v4 as uuid } from "uuid";
@@ -65,25 +65,27 @@ function BurgerConstructor() {
     openModal();
   };
 
-  let summOrder = 0;
-  let orderElementsID = { ingredients: [] };
-  let orderBun = null;
+  const orderBun = buns[0] || {};
 
-  buns.map((el) => {
-    summOrder = (summOrder + el.price) * 2;
-    orderBun = el._id;
-  });
+  const summOrder = useMemo(
+    () =>
+      ingredients.reduce(
+        (acc, el) => (acc += el.price),
+        orderBun?.price * 2 || 0
+      ),
+    [orderBun?.price, ingredients]
+  );
 
-  ingredients.map((el) => {
-    summOrder = summOrder + el.price;
-    orderElementsID.ingredients = [...orderElementsID.ingredients, el._id];
-  });
+  const orderElementsID = {
+    ingredients: [
+      orderBun?._id,
+      ...ingredients.map((el) => el._id),
+      orderBun?._id,
+    ],
+  };
 
   useEffect(() => {
     if (view) {
-      orderElementsID.ingredients.unshift(orderBun);
-      orderElementsID.ingredients.push(orderBun);
-
       dispatch(getOrder(orderElementsID));
     }
   }, [view]);
@@ -148,7 +150,7 @@ function BurgerConstructor() {
       </div>
       {view && (
         <Modal onClick={closeModal}>
-          <OrderDetails orderElementsID={orderElementsID} />
+          <OrderDetails />
         </Modal>
       )}
     </section>
