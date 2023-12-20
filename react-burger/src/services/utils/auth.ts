@@ -7,14 +7,14 @@ import {
   signOutAPI,
 } from "../actions/user";
 import { deleteCookie, setCookie } from "./utils";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../types";
+
 import { TLoginUser, TPassword, TUser } from "../../services/utils/data";
+import { useAppDispatch, useAppSelector } from "./hooks";
 
 
 
 export function useAuth() {
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
  
   const signIn = async (user: TLoginUser) => {
@@ -44,7 +44,7 @@ export function useAuth() {
     navigate("/");
   };
 
-  const { user, isAuthChecked } = useSelector((state: RootState) => state.user);
+  const { user, isAuthChecked } = useAppSelector((state) => state.user);
 
   return {
     user,

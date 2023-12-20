@@ -1,6 +1,6 @@
 import AppHeader from "../AppHeader/AppHeader";
 import style from "./App.module.css";
-import { useDispatch, useSelector } from "react-redux";
+
 import { useEffect } from "react";
 import { getIngredients } from "../../services/actions/ingredients";
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -18,27 +18,28 @@ import { useModal } from "../../hooks/usemodal";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 import { useAuth } from "../../services/utils/auth";
 import Error404 from "../Error404/Error404";
-import { RootState } from "../../services/types";
+import { useAppDispatch } from "../../services/utils/hooks";
 
 function App() {
-  const dispatch: any = useDispatch();
-  const auth: any = useAuth();
-  const location: any = useLocation;
+  const dispatch = useAppDispatch();
+  const auth = useAuth();
+  const location = useLocation();
+  const background = location.state && location.state.background;
 
   useEffect(() => {
     dispatch(getIngredients());
     auth.getUser();
   }, [dispatch]);
-  const { view } = useSelector((state: RootState) => state.modal);
+
   const { closeModal } = useModal();
 
   return (
     <div className={style.app}>
       <AppHeader />
       <main className="center">
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-
+        <Routes location={background || location}>
+          <Route path="/" element={<MainPage />}></Route>
+          <Route path="/ingredient/:id/" element={<IngredientDetails />} />
           <Route
             path="/login/"
             element={
@@ -104,7 +105,12 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {view ? (
+
+          <Route element={<Error404 />} />
+        </Routes>
+        {background && (
+          <Routes>
+            {" "}
             <Route
               path="/ingredient/:id/"
               element={
@@ -113,11 +119,8 @@ function App() {
                 </Modal>
               }
             />
-          ) : (
-            <Route path="/ingredient/:id/" element={<IngredientDetails />} />
-          )}
-          <Route element={<Error404 />} />
-        </Routes>
+          </Routes>
+        )}
       </main>
     </div>
   );

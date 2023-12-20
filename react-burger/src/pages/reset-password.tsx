@@ -2,7 +2,7 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useCallback, useRef, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, FormEvent } from "react";
 import style from "./login.module.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -26,7 +26,7 @@ export function ResetPassword({}) {
   }, [token]);
 
   const onSubmit = useCallback(
-    (e: any) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const json = {
         password: password,

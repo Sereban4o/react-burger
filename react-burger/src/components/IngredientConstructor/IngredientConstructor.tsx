@@ -3,19 +3,26 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from "./IngredientConstructor.module.css";
-import { useRef } from "react";
-import { DropTargetMonitor, useDrop, useDrag } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
+import { DragEvent, useRef } from "react";
+import { useDrop, useDrag } from "react-dnd";
 import { REMOVE_INGREDIENTS } from "../../services/actions/bugrerIngredients";
-import { RootState } from "../../services/types";
+import { TIngredients } from "../../services/utils/data";
+import { useAppDispatch, useAppSelector } from "../../services/utils/hooks";
 
-function IngredientConstructor(props: any) {
-  const { item, index, moveItem } = props;
-  const dispatch = useDispatch();
+type TIngredientConstructorProps = {
+  item: TIngredients;
+  index: number;
+  moveItem: Function;
+};
 
-  const { ingredients } = useSelector(
-    (state: RootState) => state.bugrerIngredients
-  );
+function IngredientConstructor({
+  item,
+  index,
+  moveItem,
+}: TIngredientConstructorProps) {
+  const dispatch = useAppDispatch();
+
+  const { ingredients } = useAppSelector((state) => state.bugrerIngredients);
   const ref = useRef<HTMLDivElement>(null);
 
   const [{ handlerId }, drop] = useDrop({
@@ -33,7 +40,7 @@ function IngredientConstructor(props: any) {
         return;
       }
 
-      const dragIndex = (item as any).index; //item.index;
+      const dragIndex = (item as any).index;
       const hoverIndex = index;
       if (dragIndex === hoverIndex) {
         return;
@@ -67,7 +74,7 @@ function IngredientConstructor(props: any) {
 
   if (item.type !== "bun") drag(drop(ref));
 
-  const preventDefault = (e: any) => e.preventDefault();
+  const preventDefault = (e: DragEvent<HTMLDivElement>) => e.preventDefault();
 
   const opacity = `opacity: ${isDragging ? 0 : 1}`;
 

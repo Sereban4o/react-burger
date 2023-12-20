@@ -1,4 +1,10 @@
-import { useState, useCallback } from "react";
+import {
+  useState,
+  useCallback,
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+} from "react";
 import style from "./profile.module.css";
 import {
   Input,
@@ -23,6 +29,12 @@ export function Profile() {
     password: "",
   });
 
+  useEffect(() => {
+    if (auth && auth.user) {
+      setUser({ ...user, name: auth.user.name, email: auth.user.email });
+    }
+  }, []);
+
   const { visible, onVisible } = useVisible();
   const [visiableButton, setVisiableButton] = useState(false);
 
@@ -32,7 +44,7 @@ export function Profile() {
     auth.signOut();
   }, [auth, navigate]);
 
-  const onChange = (e: any) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
 
     setVisiableButton(true);
@@ -50,7 +62,7 @@ export function Profile() {
   };
 
   const onSubmit = useCallback(
-    (e: any) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (user.email) {
         auth.saveUser({ email: user.email, name: user.name });

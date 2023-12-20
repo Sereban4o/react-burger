@@ -1,8 +1,8 @@
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import { createPortal } from "react-dom";
-import PropTypes from "prop-types";
+import { TModalProps } from "../../services/utils/data";
 
-function Modal({ onClick, children }: any) {
+function Modal({ onClick, children }: TModalProps) {
   return (
     <>
       {createPortal(
@@ -12,10 +12,5 @@ function Modal({ onClick, children }: any) {
     </>
   );
 }
-
-Modal.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  children: PropTypes.object.isRequired,
-};
 
 export default Modal;

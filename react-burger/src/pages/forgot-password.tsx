@@ -2,9 +2,9 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useCallback, useRef, useState } from "react";
+import { FormEvent, useCallback, useState } from "react";
 import style from "./login.module.css";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../services/utils/auth";
 import { randomString } from "../services/utils/utils";
 
@@ -14,7 +14,7 @@ export function ForgotPassword() {
   const auth = useAuth();
 
   const onSubmit = useCallback(
-    (e: any) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (email.length > 3) {
         const jsonPost = {

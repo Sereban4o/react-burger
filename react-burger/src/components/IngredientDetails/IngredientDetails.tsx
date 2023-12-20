@@ -1,10 +1,9 @@
 import { useParams } from "react-router-dom";
 import style from "./IngredientDetails.module.css";
-import { useSelector } from "react-redux";
-import { RootState } from "../../services/types";
+import { useAppSelector } from "../../services/utils/hooks";
 
 function IngredientDetails() {
-  const { dataApi } = useSelector((state: RootState) => state.ingredients);
+  const { dataApi } = useAppSelector((state) => state.ingredients);
 
   const { id } = useParams();
 

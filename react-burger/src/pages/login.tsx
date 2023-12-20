@@ -2,7 +2,7 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState, useCallback } from "react";
+import { useState, useCallback, ChangeEvent, FormEvent } from "react";
 import style from "./login.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../services/utils/auth";
@@ -14,14 +14,14 @@ export function Login() {
 
   const navigate = useNavigate();
 
-  const onChange = (e: any) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
   const auth = useAuth();
 
   const onSubmit = useCallback(
-    (e: any) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       auth.signIn(user);
     },

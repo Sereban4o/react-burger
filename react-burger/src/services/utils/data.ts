@@ -1,3 +1,7 @@
+import { ReactNode, ReactPortal } from "react";
+
+
+
 export type TIngredients = {
      _id: string;
      name: string;
@@ -18,12 +22,13 @@ export type TIngredients = {
 export type TPassword =  {
   password: string,
   token: string,
-};
+}; 
 
   export type TUser ={
+    name: string,
     email: string,
     password?: string,
-    name: string,
+    
   };
 
   export type TLoginUser ={
@@ -32,7 +37,7 @@ export type TPassword =  {
   };
 
   export type TAuth = {
-    user: null | TUser,
+    user:  TUser,
     isAuthChecked: boolean,
     getUser(): void,
     saveUser(): void,
@@ -42,3 +47,24 @@ export type TPassword =  {
     resetPassword(): void,
   };
 
+  export type TItem={
+    item: TIngredients;
+  };
+ export type TModalProps = {
+    onClick: any;
+    children:  ReactPortal | ReactNode;
+  };
+
+  export type TProtectedRouteProps = {
+    onlyUnAuth?: boolean;
+    children: JSX.Element;
+  };
+
+  export type TAction={
+    type: string;
+    item?: TIngredients; 
+  }
+
+ export type TOrderElements={
+  ingredients:Array<String>;
+ }

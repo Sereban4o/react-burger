@@ -7,8 +7,7 @@ import { ResetPassword } from "./reset-password";
 import { MainPage } from "./main";
 
 export {
-  ForgotPassword,
-  
+  ForgotPassword,  
   Login,
   Profile,
   Register,

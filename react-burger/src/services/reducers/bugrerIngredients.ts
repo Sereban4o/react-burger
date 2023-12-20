@@ -16,9 +16,11 @@ const initialState: TBugrerIngredientsState = {
   ingredients: [],
 };
 
-export const bugrerIngredientsReducer = (state = initialState, action: any) => {
+export const bugrerIngredientsReducer = (state = initialState, action: any): TBugrerIngredientsState => {
+  
   switch (action.type) {
     case ADD_INGREDIENTS: {
+ 
       if (action.item.type === "bun") {
         return {
           ...state,

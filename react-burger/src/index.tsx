@@ -3,16 +3,24 @@ import "./index.css";
 import App from "./components/App/App";
 import reportWebVitals from "./reportWebVitals";
 import { rootReducer } from "./services/reducers";
-import { createStore, applyMiddleware } from "redux";
+import { createStore, compose, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
-import { composeEnhancers } from "./services/composeEnhancers";
+
 import { CookiesProvider } from "react-cookie";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 
-const enhancer = composeEnhancers(applyMiddleware(thunk));
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
 
-const store = createStore(rootReducer, enhancer);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(thunk))
+);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -21,9 +29,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <CookiesProvider>
     <Provider store={store}>
-      <BrowserRouter>
+      <Router>
         <App />
-      </BrowserRouter>
+      </Router>
     </Provider>
   </CookiesProvider>
 );

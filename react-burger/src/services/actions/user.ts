@@ -33,14 +33,22 @@ export function getUserAPI() {
         type: GET_USER_SUCCESS,
         user: dataAPI.user,
       });
-    } catch (error: any) {
-      
-      if (error.message === "jwt expired") {
+    } catch (error: unknown) {
+      let message: string;
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (typeof error === 'string') {
+        message = error;
+      } else {
+        message = "Неизвестная ошибка"
+      }
+      if (message === "jwt expired") {
         dispatch(refreshToken(getUserAPI()));
       } else {
         dispatch({
           type: GET_USER_FAILED,
-          payload: error.message,
+          payload: message,
         });
       }
     }
@@ -69,10 +77,19 @@ export function signInAPI(user: TLoginUser) {
 
       setCookie("accessToken", dataAPI.accessToken, null);
       localStorage.setItem("refreshToken", dataAPI.refreshToken);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      let message: string;
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (typeof error === 'string') {
+        message = error;
+      } else {
+        message = "Неизвестная ошибка"
+      }
       dispatch({
         type: GET_USER_FAILED,
-        payload: error.message,
+        payload: message,
       });
     }
   };
@@ -100,10 +117,19 @@ export function signOutAPI() {
 
       deleteCookie("accessToken");
       localStorage.removeItem("refreshToken");
-    } catch (error: any) {
+    } catch (error: unknown) {
+      let message: string;
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (typeof error === 'string') {
+        message = error;
+      } else {
+        message = "Неизвестная ошибка"
+      }
       dispatch({
         type: GET_USER_FAILED,
-        payload: error.message,
+        payload: message,
       });
     }
   };
@@ -129,13 +155,22 @@ export function saveUserAPI(user: TUser) {
         type: GET_USER_SUCCESS,
         user: dataAPI.user,
       });
-    } catch (error: any) {
-      if (error.message === "jwt expired") {
+    } catch (error: unknown) {
+      let message: string;
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (typeof error === 'string') {
+        message = error;
+      } else {
+        message = "Неизвестная ошибка"
+      }
+      if (message === "jwt expired") {
         dispatch(refreshToken(saveUserAPI(user)));
       } else {
         dispatch({
           type: GET_USER_FAILED,
-          payload: error.message,
+          payload: message,
         });
       }
     }

@@ -23,7 +23,7 @@ const initialState: TIngredientsState = {
   requestFailed: false,
 };
 
-export const ingredientsReducer = (state = initialState, action: any) => {
+export const ingredientsReducer = (state = initialState, action: any): TIngredientsState => {
   switch (action.type) {
     case IMPORT_API: {
       return {

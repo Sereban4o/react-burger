@@ -1,10 +1,14 @@
-import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
-import { RootState } from "../../services/types";
 
-export const ProtectedRoute = ({ onlyUnAuth = false, children }: any) => {
-  const { user, isAuthChecked } = useSelector((state: RootState) => state.user);
+import { TProtectedRouteProps } from "../../services/utils/data";
+import { useAppSelector } from "../../services/utils/hooks";
+
+export const ProtectedRoute = ({
+  onlyUnAuth = false,
+  children,
+}: TProtectedRouteProps) => {
+  const { user, isAuthChecked } = useAppSelector((state) => state.user);
   const location = useLocation();
 
   if (!isAuthChecked) {

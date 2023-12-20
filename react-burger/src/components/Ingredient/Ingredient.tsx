@@ -4,25 +4,17 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useModal } from "../../hooks/usemodal";
-import { ingredientType } from "../../services/utils/types";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  ADD_INGREDIENT,
-  REMOVE_INGREDIENT,
-} from "../../services/actions/ingredient";
-import { useEffect } from "react";
 import { useDrag } from "react-dnd";
-import { useLocation, Link } from "react-router-dom";
-import { RootState } from "../../services/types";
-import { TIngredients } from "../../services/utils/data";
+import { Link, useLocation } from "react-router-dom";
+import { TItem } from "../../services/utils/data";
+import { useAppSelector } from "../../services/utils/hooks";
 
-function Ingredient({ item }: any) {
+function Ingredient({ item }: TItem) {
   const { openModal } = useModal();
-
-  const { buns, ingredients } = useSelector(
-    (state: RootState) => state.bugrerIngredients
-  );
   const location = useLocation();
+  const { buns, ingredients } = useAppSelector(
+    (state) => state.bugrerIngredients
+  );
 
   const arrauBunsFilter = buns.filter((el) => el._id === item._id);
   const arrauIngredientsFilter = ingredients.filter(
@@ -46,6 +38,7 @@ function Ingredient({ item }: any) {
         to={{
           pathname: `/ingredient/${item._id}/`,
         }}
+        state={{ background: location }}
         className={style.ingredient_link}
       >
         <div ref={dragRef} style={{ opacity }}>
@@ -70,7 +63,4 @@ function Ingredient({ item }: any) {
   );
 }
 
-Ingredient.propTypes = {
-  item: ingredientType.isRequired,
-};
 export default Ingredient;

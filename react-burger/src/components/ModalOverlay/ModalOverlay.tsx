@@ -1,19 +1,19 @@
 import style from "./ModalOverlay.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef, useEffect } from "react";
-import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import { RootState } from "../../services/types";
+import { TModalProps } from "../../services/utils/data";
+import { useAppSelector } from "../../services/utils/hooks";
 
-function ModalOverlay({ onClick, children }: any) {
+function ModalOverlay({ onClick, children }: TModalProps) {
   const modal = useRef<HTMLDivElement>(null);
-  const { view } = useSelector((state: RootState) => state.modal);
+  const { view } = useAppSelector((state) => state.modal);
 
   useEffect(() => {
-    const handleClick = (e: any) => {
+    const handleClick = (e: MouseEvent) => {
       if (!view) return;
+      const target = e.target as HTMLDivElement;
 
-      if (e.target.children[0] === modal.current) {
+      if (target.children[0] === modal.current) {
         onClick();
       }
     };
@@ -24,10 +24,10 @@ function ModalOverlay({ onClick, children }: any) {
   }, []);
 
   useEffect(() => {
-    const handleKey = (e: any) => {
+    const handleKey = (e: globalThis.KeyboardEvent) => {
       if (!view) return;
 
-      if (e.key == "Escape") {
+      if (e.key === "Escape") {
         onClick();
       }
     };
@@ -49,10 +49,5 @@ function ModalOverlay({ onClick, children }: any) {
     </div>
   );
 }
-
-ModalOverlay.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  children: PropTypes.object.isRequired,
-};
 
 export default ModalOverlay;

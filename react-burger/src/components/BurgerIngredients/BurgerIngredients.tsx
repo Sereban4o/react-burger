@@ -1,14 +1,11 @@
 import style from "./BurgerIngredients.module.css";
 import Ingredient from "../Ingredient/Ingredient";
-import { useSelector } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef, useState } from "react";
-import { RootState } from "../../services/types";
+import { useAppSelector } from "../../services/utils/hooks";
 
 function BurgerIngredients() {
-  const { bun, main, sauce } = useSelector(
-    (state: RootState) => state.ingredients
-  );
+  const { bun, main, sauce } = useAppSelector((state) => state.ingredients);
 
   const [current, setCurrent] = useState("buns");
 
@@ -76,7 +73,7 @@ function BurgerIngredients() {
             Соусы
           </p>
           <div className={style.content_box_box}>
-            {sauce.map((el, index) => (
+            {sauce.map((el) => (
               <Ingredient item={el} key={el._id} />
             ))}
           </div>
@@ -85,7 +82,7 @@ function BurgerIngredients() {
         <div ref={mainsRef}>
           <p className="text text_type_main-medium  mt-10">Начинки</p>
           <div className={style.content_box_box}>
-            {main.map((el, index) => (
+            {main.map((el) => (
               <Ingredient item={el} key={el._id} />
             ))}
           </div>

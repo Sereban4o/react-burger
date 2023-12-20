@@ -2,7 +2,7 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState, useCallback } from "react";
+import { useState, useCallback, ChangeEvent, FormEvent } from "react";
 import style from "./login.module.css";
 import { Link } from "react-router-dom";
 import { useVisible } from "../hooks/visible";
@@ -15,14 +15,14 @@ export function Register() {
   const auth = useAuth();
 
   const onSubmit = useCallback(
-    (e: any) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       auth.signIn(user);
     },
     [user]
   );
 
-  const onChange = (e: any) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 

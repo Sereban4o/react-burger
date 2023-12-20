@@ -7,7 +7,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useModal } from "../../hooks/usemodal";
 import Modal from "../Modal/Modal";
-import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_INGREDIENTS,
   UPDATE_INGREDIENTS,
@@ -19,17 +18,17 @@ import { v4 as uuid } from "uuid";
 import IngredientConstructor from "../IngredientConstructor/IngredientConstructor";
 import { useAuth } from "../../services/utils/auth";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../services/types";
+import { useAppDispatch, useAppSelector } from "../../services/utils/hooks";
 
 function BurgerConstructor() {
   const { openModal, closeModal } = useModal();
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const auth = useAuth();
-  const { buns, ingredients } = useSelector(
-    (state: RootState) => state.bugrerIngredients
+  const { buns, ingredients } = useAppSelector(
+    (state) => state.bugrerIngredients
   );
-  const { view } = useSelector((state: RootState) => state.modal);
+  const { view } = useAppSelector((state) => state.modal);
 
   const [{ isHover }, dropRef] = useDrop({
     accept: "ingredient",

@@ -7,14 +7,14 @@ import {
 import { TUser } from "../utils/data";
 
 export type TUserState = {
-  user: null | TUser,
+  user: TUser| null,
   request: boolean,
   requestFailed: boolean,
   isAuthChecked: boolean,
 };
 
 
-const initialState = {
+const initialState:TUserState = {
   user: null,
   request: false,
   requestFailed: false,

@@ -1,12 +1,13 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { MODAL_FALSE, MODAL_TRUE } from "../services/actions/modal";
-import { useDispatch } from "react-redux";
+
+import { useAppDispatch } from "../services/utils/hooks";
 
 export const useModal = () => {
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const openModal = useCallback(() => {
     dispatch({

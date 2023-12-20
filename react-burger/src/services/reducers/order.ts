@@ -5,13 +5,13 @@ import {
 } from "../actions/order";
 
 export type TOrderState = {
-  order: any,
+  order: number|null,
   request: boolean,
   requestFailed: boolean,
 };
 
 const initialState: TOrderState = {
-  order: 0,
+  order: null,
   request: false,
   requestFailed: false,
 };
@@ -25,10 +25,11 @@ export const orderReducer = (state = initialState, action: any): TOrderState => 
       };
     }
     case IMPORT_ORDER_API_SUCCESS: {
+   
       return {
         ...state,
         requestFailed: false,
-        order: action.data,
+        order: action.data.number,
         request: false,
       };
     }
