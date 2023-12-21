@@ -10,7 +10,6 @@ import { TItem } from "../../services/utils/data";
 import { useAppSelector } from "../../services/utils/hooks";
 
 function Ingredient({ item }: TItem) {
-  const { openModal } = useModal();
   const location = useLocation();
   const { buns, ingredients } = useAppSelector(
     (state) => state.bugrerIngredients
@@ -32,7 +31,7 @@ function Ingredient({ item }: TItem) {
   });
 
   return (
-    <div onClick={openModal}>
+    <>
       <Link
         key={item._id}
         to={{
@@ -59,7 +58,7 @@ function Ingredient({ item }: TItem) {
           </div>
         </div>
       </Link>
-    </div>
+    </>
   );
 }
 

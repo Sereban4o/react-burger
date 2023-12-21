@@ -2,15 +2,12 @@ import style from "./ModalOverlay.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef, useEffect } from "react";
 import { TModalProps } from "../../services/utils/data";
-import { useAppSelector } from "../../services/utils/hooks";
 
 function ModalOverlay({ onClick, children }: TModalProps) {
   const modal = useRef<HTMLDivElement>(null);
-  const { view } = useAppSelector((state) => state.modal);
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      if (!view) return;
       const target = e.target as HTMLDivElement;
 
       if (target.children[0] === modal.current) {
@@ -25,8 +22,6 @@ function ModalOverlay({ onClick, children }: TModalProps) {
 
   useEffect(() => {
     const handleKey = (e: globalThis.KeyboardEvent) => {
-      if (!view) return;
-
       if (e.key === "Escape") {
         onClick();
       }

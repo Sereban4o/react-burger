@@ -25,13 +25,12 @@ function App() {
   const auth = useAuth();
   const location = useLocation();
   const background = location.state && location.state.background;
+  const { closeModal } = useModal();
 
   useEffect(() => {
     dispatch(getIngredients());
     auth.getUser();
   }, [dispatch]);
-
-  const { closeModal } = useModal();
 
   return (
     <div className={style.app}>
@@ -40,6 +39,7 @@ function App() {
         <Routes location={background || location}>
           <Route path="/" element={<MainPage />}></Route>
           <Route path="/ingredient/:id/" element={<IngredientDetails />} />
+
           <Route
             path="/login/"
             element={
@@ -110,7 +110,6 @@ function App() {
         </Routes>
         {background && (
           <Routes>
-            {" "}
             <Route
               path="/ingredient/:id/"
               element={

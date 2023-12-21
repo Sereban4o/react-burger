@@ -19,11 +19,11 @@ export const useModal = () => {
     dispatch({
       type: MODAL_FALSE,
     });
-    navigate("/");
+    navigate(-1);
   }, [dispatch, navigate]);
 
   return {
     openModal,
     closeModal,
   };
-};
+}; 
