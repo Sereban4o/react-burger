@@ -1,23 +1,35 @@
-import { request } from "../utils/api";
+import { INGREDIENTS_REQUEST, INGREDIENTS_REQUEST_FAILED, INGREDIENTS_REQUEST_SUCCESS } from "../constants";
+import { TIngredients } from "../utils/data";
 
-export const IMPORT_API = "IMPORT_API";
-export const IMPORT_API_SUCCESS = "IMPORT_API_SUCCESS";
-export const IMPORT_API_FAILED = "IMPORT_API_FAILED";
 
-export function getIngredients() {
-  
-  return async function (dispatch: any) {
-    dispatch({ type: IMPORT_API });
+export interface IIngredientsRequestAction {
+  readonly type: typeof INGREDIENTS_REQUEST;
 
-    try {
-      const dataAPI = await request("ingredients", null);
-
-      dispatch({
-        type: IMPORT_API_SUCCESS,
-        data: dataAPI.data,
-      });
-    } catch (error) {
-      dispatch({ type: IMPORT_API_FAILED });
-    }
-  };
 }
+
+export interface IIngredientsRequestSuccessAction {
+  readonly type: typeof INGREDIENTS_REQUEST_SUCCESS;
+  readonly data: ReadonlyArray<TIngredients>;
+}
+
+export interface IIngredientsRequestFailedAction {
+  readonly type: typeof INGREDIENTS_REQUEST_FAILED;
+}
+
+export type TIngredientsActions =
+  | IIngredientsRequestAction
+  | IIngredientsRequestSuccessAction
+  | IIngredientsRequestFailedAction;
+
+export const ingredientsAction = (): IIngredientsRequestAction => ({
+  type: INGREDIENTS_REQUEST
+})
+
+export const ingredientsSuccessAction = (data: ReadonlyArray<TIngredients>): IIngredientsRequestSuccessAction => ({
+  type: INGREDIENTS_REQUEST_SUCCESS,
+  data
+})
+
+export const ingredientsFailedAction = (): IIngredientsRequestFailedAction => ({
+  type: INGREDIENTS_REQUEST_FAILED
+})

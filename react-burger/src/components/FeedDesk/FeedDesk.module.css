@@ -1,0 +1,16 @@
+.box {
+    width: 580px;
+}
+
+.box_orders {
+    display: flex;
+    gap: 36px;
+}
+
+.done {
+    color: #00CCCC;
+}
+
+.orders {
+    width: 272px;
+}

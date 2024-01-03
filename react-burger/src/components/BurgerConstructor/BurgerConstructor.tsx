@@ -7,18 +7,20 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useModal } from "../../hooks/usemodal";
 import Modal from "../Modal/Modal";
-import {
-  ADD_INGREDIENTS,
-  UPDATE_INGREDIENTS,
-} from "../../services/actions/bugrerIngredients";
 import { useCallback, useEffect, useMemo } from "react";
-import { getOrder } from "../../services/actions/order";
+
 import { useDrop } from "react-dnd";
 import { v4 as uuid } from "uuid";
 import IngredientConstructor from "../IngredientConstructor/IngredientConstructor";
 import { useAuth } from "../../services/utils/auth";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../services/utils/hooks";
+import {
+  addIngredientsAction,
+  updateIngredientsAction,
+} from "../../services/actions/bugrerIngredients";
+import { TIngredients } from "../../services/utils/data";
+import { getOrder } from "../../services/utils/api";
 
 function BurgerConstructor() {
   const { openModal, closeModal } = useModal();
@@ -32,11 +34,14 @@ function BurgerConstructor() {
 
   const [{ isHover }, dropRef] = useDrop({
     accept: "ingredient",
-    drop(item) {
-      dispatch({
+    drop(item: TIngredients) {
+      const dropItem: TIngredients = { ...item, dragId: uuid() };
+      dispatch(
+        addIngredientsAction(dropItem) /* {
         type: ADD_INGREDIENTS,
         item: { ...(typeof item === "object" ? item : {}), dragId: uuid() },
-      });
+      } */
+      );
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -49,10 +54,12 @@ function BurgerConstructor() {
       const newCards = [...ingredients];
       newCards.splice(dragIndex, 1);
       newCards.splice(hoverIndex, 0, dragItem);
-      dispatch({
+      dispatch(
+        updateIngredientsAction(newCards) /* {
         type: UPDATE_INGREDIENTS,
         newCards: newCards,
-      });
+      } */
+      );
     },
     [ingredients, dispatch]
   );

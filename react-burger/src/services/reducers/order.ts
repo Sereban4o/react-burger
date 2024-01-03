@@ -1,11 +1,9 @@
-import {
-  IMPORT_ORDER_API,
-  IMPORT_ORDER_API_FAILED,
-  IMPORT_ORDER_API_SUCCESS,
-} from "../actions/order";
+import { TOrderActions } from "../actions/order";
+import { GET_ORDER, GET_ORDER_FAILED, GET_ORDER_SUCCESS } from "../constants";
+
 
 export type TOrderState = {
-  order: number|null,
+  order: number | null,
   request: boolean,
   requestFailed: boolean,
 };
@@ -16,24 +14,24 @@ const initialState: TOrderState = {
   requestFailed: false,
 };
 
-export const orderReducer = (state = initialState, action: any): TOrderState => {
+export const orderReducer = (state = initialState, action: TOrderActions): TOrderState => {
   switch (action.type) {
-    case IMPORT_ORDER_API: {
+    case GET_ORDER: {
       return {
         ...state,
         request: true,
       };
     }
-    case IMPORT_ORDER_API_SUCCESS: {
-   
+    case GET_ORDER_SUCCESS: {
+
       return {
         ...state,
         requestFailed: false,
-        order: action.data.number,
+        order: action.order,
         request: false,
       };
     }
-    case IMPORT_ORDER_API_FAILED: {
+    case GET_ORDER_FAILED: {
       return { ...state, requestFailed: true, request: false };
     }
     default: {

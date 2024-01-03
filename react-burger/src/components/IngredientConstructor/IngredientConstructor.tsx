@@ -5,9 +5,9 @@ import {
 import style from "./IngredientConstructor.module.css";
 import { DragEvent, useRef } from "react";
 import { useDrop, useDrag } from "react-dnd";
-import { REMOVE_INGREDIENTS } from "../../services/actions/bugrerIngredients";
 import { TIngredients } from "../../services/utils/data";
 import { useAppDispatch, useAppSelector } from "../../services/utils/hooks";
+import { removeIngredientsAction } from "../../services/actions/bugrerIngredients";
 
 type TIngredientConstructorProps = {
   item: TIngredients;
@@ -82,10 +82,12 @@ function IngredientConstructor({
     const newCards = [...ingredients];
     newCards.splice(index, 1);
 
-    dispatch({
+    dispatch(
+      removeIngredientsAction(newCards) /* {
       type: REMOVE_INGREDIENTS,
       newCards: newCards,
-    });
+    } */
+    );
   };
   return (
     <div

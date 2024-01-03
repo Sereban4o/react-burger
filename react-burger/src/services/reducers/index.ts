@@ -1,18 +1,20 @@
 import { combineReducers } from "redux";
 import { ingredientsReducer } from "./ingredients";
 import { bugrerIngredientsReducer } from "./bugrerIngredients";
-import { ingredientReducer } from "./ingredient";
 import { orderReducer } from "./order";
 import { userReducer } from "./user";
 import { modalReducer } from "./modal";
 import { resetPasswordReducer } from "./resetPassword";
+import { ordersReducer } from "./orders";
+
 
 export const rootReducer = combineReducers({
-  ingredients: ingredientsReducer,
-  bugrerIngredients: bugrerIngredientsReducer,
-  ingredient: ingredientReducer,
-  order: orderReducer,
-  user: userReducer,
-  modal: modalReducer,
-  resetPassword: resetPasswordReducer,
+    ingredients: ingredientsReducer,
+    bugrerIngredients: bugrerIngredientsReducer,
+    order: orderReducer,
+    user: userReducer,
+    modal: modalReducer,
+    resetPassword: resetPasswordReducer,
+    orders: ordersReducer,
+
 });

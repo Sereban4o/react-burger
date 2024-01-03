@@ -1,8 +1,9 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { MODAL_FALSE, MODAL_TRUE } from "../services/actions/modal";
+
 
 import { useAppDispatch } from "../services/utils/hooks";
+import { modalFalseAction, modalTrueAction } from "../services/actions/modal";
 
 export const useModal = () => {
   const navigate = useNavigate();
@@ -10,15 +11,11 @@ export const useModal = () => {
   const dispatch = useAppDispatch();
 
   const openModal = useCallback(() => {
-    dispatch({
-      type: MODAL_TRUE,
-    });
+    dispatch(modalTrueAction());
   }, [dispatch]);
 
   const closeModal = useCallback(() => {
-    dispatch({
-      type: MODAL_FALSE,
-    });
+    dispatch(modalFalseAction());
     navigate(-1);
   }, [dispatch, navigate]);
 

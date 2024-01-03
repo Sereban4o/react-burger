@@ -1,0 +1,61 @@
+.box {
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+    margin-bottom: 60px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 640px;
+
+}
+
+.number {
+    align-self: center;
+}
+
+.status {
+    color: #00CCCC;
+}
+
+.ingredients {
+    height: 300px;
+    overflow: auto;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.summ {
+    display: flex;
+    gap: 5px;
+}
+
+.image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.border {
+    width: 64px;
+    height: 64px;
+    text-align: center;
+    border: 2px solid #801AB2;
+    border-radius: 100%;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+}
+
+.heading {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}

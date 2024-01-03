@@ -1,15 +1,17 @@
-import {
-  REQUEST_FORGOT_PASSWORD_API,
-  REQUEST_FORGOT_PASSWORD_API_SUCCESS,
-  REQUEST_FORGOT_PASSWORD_API_FAILED,
-} from "../actions/resetPassword";
+import { TForgotPasswordActions } from "../actions/resetPassword";
+import { REQUEST_FORGOT_PASSWORD_API, REQUEST_FORGOT_PASSWORD_API_FAILED, REQUEST_FORGOT_PASSWORD_API_SUCCESS } from "../constants";
 
-const initialState = {
+export type TForgotPasswordState = {
+  request: boolean,
+  requestFailed: boolean,
+}
+
+const forgotPasswordInitialState = {
   request: false,
   requestFailed: false,
 };
 
-export const resetPasswordReducer = (state = initialState, action: any) => {
+export const resetPasswordReducer = (state = forgotPasswordInitialState, action: TForgotPasswordActions): TForgotPasswordState => {
   switch (action.type) {
     case REQUEST_FORGOT_PASSWORD_API: {
       return {

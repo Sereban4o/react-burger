@@ -1,178 +1,93 @@
-import { refreshTokenRequest, request, saveTokens } from "../utils/api";
-import { TLoginUser, TUser } from "../utils/data";
-import { deleteCookie, getCookie, setCookie } from "../utils/utils";
 
-export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
-export const GET_USER_FAILED = "GET_USER_FAILED";
-export const GET_USER_REQEST = "GET_USER_REQEST";
-export const REMOVE_USER = "REMOVE_USER";
+import { LOGIN_REQUEST, LOGIN_REQUEST_FAILED, LOGIN_REQUEST_SUCCESS, LOGOUT_REQUEST, LOGOUT_REQUEST_FAILED, LOGOUT_REQUEST_SUCCESS, USER_REQUEST, USER_REQUEST_FAILED, USER_REQUEST_SUCCESS } from "../constants";
+import { TUser } from "../utils/data";
 
-export const refreshToken = (afterRefresh: any) => (dispatch: any) => {
-  refreshTokenRequest().then((res) => {
-    saveTokens(res.refreshToken, res.accessToken);
-    dispatch(afterRefresh);
-  });
-};
 
-export function getUserAPI() {
-  return async function (dispatch: any) {
-    dispatch({ type: GET_USER_REQEST });
-
-    try {
-      const options = {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          authorization: getCookie("accessToken"),
-        },
-      };
-
-      const dataAPI = await request("auth/user", options);
-
-      dispatch({
-        type: GET_USER_SUCCESS,
-        user: dataAPI.user,
-      });
-    } catch (error: unknown) {
-      let message: string;
-
-      if (error instanceof Error) {
-        message = error.message;
-      } else if (typeof error === 'string') {
-        message = error;
-      } else {
-        message = "Неизвестная ошибка"
-      }
-      if (message === "jwt expired") {
-        dispatch(refreshToken(getUserAPI()));
-      } else {
-        dispatch({
-          type: GET_USER_FAILED,
-          payload: message,
-        });
-      }
-    }
-  };
+export interface IGetUserAction {
+    readonly type: typeof USER_REQUEST;
 }
 
-export function signInAPI(user: TLoginUser) {
-  return async function (dispatch: any) {
-    dispatch({ type: GET_USER_REQEST });
-
-    try {
-      const options = {
-        method: "POST",
-        body: JSON.stringify(user),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      };
-
-      const dataAPI = await request("auth/login", options);
-
-      dispatch({
-        type: GET_USER_SUCCESS,
-        user: dataAPI.user,
-      });
-
-      setCookie("accessToken", dataAPI.accessToken, null);
-      localStorage.setItem("refreshToken", dataAPI.refreshToken);
-    } catch (error: unknown) {
-      let message: string;
-
-      if (error instanceof Error) {
-        message = error.message;
-      } else if (typeof error === 'string') {
-        message = error;
-      } else {
-        message = "Неизвестная ошибка"
-      }
-      dispatch({
-        type: GET_USER_FAILED,
-        payload: message,
-      });
-    }
-  };
+export interface IGetUserFailedAction {
+    readonly type: typeof USER_REQUEST_FAILED;
 }
 
-export function signOutAPI() {
-  return async function (dispatch: any) {
-    dispatch({ type: GET_USER_REQEST });
-
-    try {
-      const options = {
-        method: "POST",
-        body: JSON.stringify({ token: localStorage.getItem("refreshToken") }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      };
-
-      const dataAPI = await request("auth/logout", options);
-
-      dispatch({
-        type: REMOVE_USER,
-        user: dataAPI.user,
-      });
-
-      deleteCookie("accessToken");
-      localStorage.removeItem("refreshToken");
-    } catch (error: unknown) {
-      let message: string;
-
-      if (error instanceof Error) {
-        message = error.message;
-      } else if (typeof error === 'string') {
-        message = error;
-      } else {
-        message = "Неизвестная ошибка"
-      }
-      dispatch({
-        type: GET_USER_FAILED,
-        payload: message,
-      });
-    }
-  };
+export interface IGetUserSuccessAction {
+    readonly type: typeof USER_REQUEST_SUCCESS;
+    readonly user: TUser;
 }
 
-export function saveUserAPI(user: TUser) {
-  return async function (dispatch: any) {
-    dispatch({ type: GET_USER_REQEST });
-
-    try {
-      const options = {
-        method: "PATCH",
-        body: JSON.stringify({ user }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          authorization: getCookie("accessToken"),
-        },
-      };
-
-      const dataAPI = await request("auth/user", options);
-
-      dispatch({
-        type: GET_USER_SUCCESS,
-        user: dataAPI.user,
-      });
-    } catch (error: unknown) {
-      let message: string;
-
-      if (error instanceof Error) {
-        message = error.message;
-      } else if (typeof error === 'string') {
-        message = error;
-      } else {
-        message = "Неизвестная ошибка"
-      }
-      if (message === "jwt expired") {
-        dispatch(refreshToken(saveUserAPI(user)));
-      } else {
-        dispatch({
-          type: GET_USER_FAILED,
-          payload: message,
-        });
-      }
-    }
-  };
+export interface ILoginAction {
+    readonly type: typeof LOGIN_REQUEST;
 }
+
+export interface ILoginFailedAction {
+    readonly type: typeof LOGIN_REQUEST_FAILED;
+}
+
+export interface ILoginSuccessAction {
+    readonly type: typeof LOGIN_REQUEST_SUCCESS;
+    readonly user: TUser;
+}
+
+export interface ILogoutAction {
+    readonly type: typeof LOGOUT_REQUEST;
+}
+
+export interface ILogoutFailedAction {
+    readonly type: typeof LOGOUT_REQUEST_FAILED;
+}
+
+export interface ILogoutSuccessAction {
+    readonly type: typeof LOGOUT_REQUEST_SUCCESS;
+}
+
+export type TUserActions =
+    | IGetUserAction
+    | IGetUserFailedAction
+    | IGetUserSuccessAction
+    | ILoginAction
+    | ILoginFailedAction
+    | ILoginSuccessAction
+    | ILogoutAction
+    | ILogoutFailedAction
+    | ILogoutSuccessAction;
+
+export const loginAction = (): ILoginAction => ({
+    type: LOGIN_REQUEST
+});
+
+export const loginFailedAction = (): ILoginFailedAction => ({
+    type: LOGIN_REQUEST_FAILED
+});
+
+export const loginSuccessAction = (user: TUser): ILoginSuccessAction => ({
+    type: LOGIN_REQUEST_SUCCESS,
+    user
+});
+
+export const logoutAction = (): ILogoutAction => ({
+    type: LOGOUT_REQUEST
+});
+
+export const logoutFailedAction = (): ILogoutFailedAction => ({
+    type: LOGOUT_REQUEST_FAILED
+});
+
+export const logoutSuccessAction = (): ILogoutSuccessAction => ({
+    type: LOGOUT_REQUEST_SUCCESS
+});
+
+export const getUserAction = (): IGetUserAction => ({
+    type: USER_REQUEST
+});
+
+export const getUserFailedAction = (): IGetUserFailedAction => ({
+    type: USER_REQUEST_FAILED
+});
+
+export const getUserSuccessAction = (user: TUser): IGetUserSuccessAction => ({
+    type: USER_REQUEST_SUCCESS,
+    user
+});
+
+
