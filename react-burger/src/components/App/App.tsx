@@ -24,7 +24,7 @@ import { Feed } from "../../pages/feed";
 import { connect } from "../../services/actions/orders";
 import OrderInfo from "../OrderInfo/OrderInfo";
 import { OrdersHistory } from "../../pages/ordersHistory";
-import UserOrderInfo from "../UserOrderInfo/UserOrderInfo";
+
 import { getCookie } from "../../services/utils/utils";
 
 
@@ -111,7 +111,7 @@ function App() {
                         path="/profile/orders/:id"
                         element={
                             <ProtectedRoute>
-                                <UserOrderInfo />
+                                <OrderInfo />
                             </ProtectedRoute>
                         }
                     />
@@ -141,7 +141,7 @@ function App() {
                             element={
                                 <ProtectedRoute>
                                     <Modal onClick={closeModal}>
-                                        <UserOrderInfo />
+                                        <OrderInfo />
                                     </Modal>
                                 </ProtectedRoute>
                             }

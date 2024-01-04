@@ -1,5 +1,40 @@
 import { ReactNode, ReactPortal } from "react";
 
+export type TOrderElement = {
+    createdAt: string;
+    ingredients: Array<string>;
+    name: string;
+    number: number;
+    status: string;
+    updatedAt: string;
+    _id: string;
+
+
+}
+
+
+
+export type TOrderItem = {
+    item: TOrderElement;
+}
+
+export type TOrderIngredients = {
+    item: TIngredients;
+    count: number | string;
+}
+
+export type TNewTableOrderIngredients = {
+    id: string;
+    count: number;
+}
+
+export type TOrderAPI = {
+    success: string;
+    orders: Array<TOrderElement>;
+    total: number;
+    totalToday: number;
+}
+
 export type TIngredients = {
     _id: string;
     name: string;

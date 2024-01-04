@@ -1,11 +1,13 @@
+import { Dispatch } from "react";
 import { clearIngredientsAction } from "../actions/bugrerIngredients";
-import { ingredientsAction, ingredientsFailedAction, ingredientsSuccessAction } from "../actions/ingredients";
+import { TIngredientsActions, ingredientsAction, ingredientsFailedAction, ingredientsSuccessAction } from "../actions/ingredients";
 import { getOrderAction, getOrderFailedAction, getOrderSuccessAction } from "../actions/order";
-import { getForgotPasswordAction, getForgotPasswordFailedAction, getForgotPasswordSuccessAction } from "../actions/resetPassword";
-import { getUserAction, getUserFailedAction, getUserSuccessAction } from "../actions/user";
+import { TForgotPasswordActions, getForgotPasswordAction, getForgotPasswordFailedAction, getForgotPasswordSuccessAction } from "../actions/resetPassword";
+import { TUserActions, getUserAction, getUserFailedAction, getUserSuccessAction } from "../actions/user";
 import { refreshToken } from "./auth";
-import { TOrderElements, TPassword, TUser } from "./data";
+import { TIngredients, TLoginUser, TOrderElement, TOrderElements, TPassword, TUser } from "./data";
 import { getCookie, setCookie } from "./utils";
+import { TActions } from "./store";
 
 const BASE_URL = "https://norma.nomoreparties.space/api/";
 
@@ -33,6 +35,9 @@ type TResponseBody<TDataKey extends string = '', TDataType = {}> = {
     headers?: Headers;
     accessToken: string,
     refreshToken: string,
+    data: Array<TIngredients>,
+    user: TUser,
+    order: TOrderElement,
 };
 
 interface CustomBody<T extends any> extends Body {
@@ -57,7 +62,7 @@ const checkResponse = (res: Response) => {
     return Promise.reject(`Ошибка ${res.status}`);
 };
 
-const checkSuccess = (res: any) => {
+const checkSuccess = (res: TResponseBody) => {
     if (res && res.success) {
         return res;
     }
@@ -65,6 +70,7 @@ const checkSuccess = (res: any) => {
 };
 
 export const request = (url: string, options: any) => {
+
     return fetch(`${BASE_URL}${url}`, options)
         .then(checkResponse)
         .then(checkSuccess);
@@ -122,7 +128,7 @@ export const logoutRequest = async (): Promise<CustomResponse<TResponseBody>> =>
 
 export function getIngredients() {
 
-    return async function (dispatch: any) {
+    return async function (dispatch: Dispatch<TActions>) {
         dispatch(ingredientsAction());
 
         try {
@@ -137,8 +143,8 @@ export function getIngredients() {
 
 
 
-export function getForgotPassword(json: JSON) {
-    return async function (dispatch: any) {
+export function getForgotPassword(json: TLoginUser) {
+    return async function (dispatch: Dispatch<TActions>) {
         dispatch(getForgotPasswordAction());
 
         try {
@@ -169,7 +175,7 @@ export function getForgotPassword(json: JSON) {
 }
 
 export function getResetPassword(json: TPassword) {
-    return async function (dispatch: any) {
+    return async function (dispatch: Dispatch<TActions>) {
         dispatch(getForgotPasswordAction());
 
         try {
@@ -199,7 +205,7 @@ export function getResetPassword(json: TPassword) {
 }
 
 export function saveUserAPI(user: TUser) {
-    return async function (dispatch: any) {
+    return async function (dispatch: Dispatch<TActions>) {
         dispatch(getUserAction());
 
         try {
@@ -208,7 +214,7 @@ export function saveUserAPI(user: TUser) {
                 body: JSON.stringify({ user }),
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
-                    authorization: getCookie("accessToken"),
+                    authorization: 'Bearer ' + getCookie("accessToken"),
                 },
             };
 
@@ -226,7 +232,7 @@ export function saveUserAPI(user: TUser) {
                 message = "Неизвестная ошибка"
             }
             if (message === "jwt expired") {
-                dispatch(refreshToken(saveUserAPI(user)));
+                refreshToken(saveUserAPI(user));
             } else {
                 dispatch(getUserFailedAction());
             }
@@ -240,11 +246,11 @@ export function getOrder(orderElementsID: TOrderElements) {
         body: JSON.stringify(orderElementsID),
         headers: {
             "Content-type": "application/json; charset=UTF-8",
-            authorization: getCookie("accessToken"),
+            authorization: 'Bearer ' + getCookie("accessToken"),
         },
     };
 
-    return async function (dispatch: any) {
+    return async function (dispatch: Dispatch<TActions>) {
         dispatch(getOrderAction());
 
         try {
@@ -263,7 +269,7 @@ export function getOrder(orderElementsID: TOrderElements) {
                 message = "Неизвестная ошибка"
             }
             if (message === "jwt expired") {
-                dispatch(refreshToken(getOrder(orderElementsID)));
+                refreshToken(getOrder(orderElementsID));
             } else {
                 dispatch(getOrderFailedAction());
             }

@@ -18,12 +18,14 @@ import { deleteCookie, getCookie, setCookie } from "./utils";
 
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { getForgotPassword, getResetPassword, loginRequest, logoutRequest, refreshTokenRequest, request, saveTokens, saveUserAPI } from "./api";
-import { TPassword, TUser } from "./data";
+import { TLoginUser, TPassword, TUser } from "./data";
 import { useNavigate } from "react-router-dom";
 import { error } from "console";
+import { Dispatch } from "react";
+import { TActions } from "./store";
 
 
-export const refreshToken = (afterRefresh: any) => (dispatch: any) => {
+export const refreshToken = (afterRefresh: any) => (dispatch: Dispatch<TActions>) => {
     refreshTokenRequest().then((res) => {
         saveTokens(res.refreshToken, res.accessToken.split('Bearer ')[1]);
         dispatch(afterRefresh);
@@ -41,7 +43,7 @@ export function useAuth() {
         await loginRequest(user)
             .then(res => {
                 if (res.ok) { return res.json(); }
-                loginFailedAction();
+                dispatch(loginFailedAction());
                 return Promise.reject(`Ошибка ${res.status}`);
 
             })
@@ -108,7 +110,7 @@ export function useAuth() {
         dispatch(saveUserAPI(user));
     };
 
-    const forgotPassword = async (json: any, randomString: string) => {
+    const forgotPassword = async (json: TLoginUser, randomString: string) => {
         setCookie("tokenPassword", randomString);
         dispatch(getForgotPassword(json));
     };

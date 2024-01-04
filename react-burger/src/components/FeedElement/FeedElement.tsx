@@ -1,10 +1,12 @@
 import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
-import { TIngredients } from "../../services/utils/data";
+import { TIngredients, TNewTableOrderIngredients, TOrderElement, TOrderIngredients, TOrderItem } from "../../services/utils/data";
 import { useAppSelector } from "../../services/utils/hooks";
 import style from "./FeedElement.module.css"
 import { Link, useLocation } from "react-router-dom";
+import { tableLayout } from "../../services/utils/utils";
 
-function FeedElement({ item }: any) {
+function FeedElement({ item }: TOrderItem) {
+
     const location = useLocation();
     const createDate = new Date(item.createdAt);
 
@@ -23,17 +25,21 @@ function FeedElement({ item }: any) {
     const { dataApi } = useAppSelector(
         (state) => state.ingredients
     );
-    let ingredients: any = [];
+    let ingredients: Array<TOrderIngredients> = [];
     let summ = 0;
 
-    item.ingredients.forEach((el: string) => {
-        const ing = dataApi.filter((item: TIngredients) => item._id === el);
+    const newT = tableLayout(item.ingredients);
+
+    newT.forEach((el: TNewTableOrderIngredients) => {
+        const ing = dataApi.filter((item: TIngredients) => item._id === el.id);
         if (ing) {
-            ingredients.push(ing[0]);
-            summ = summ + ing[0].price;
-            if (ing[0].type === 'bun') {
-                summ = summ + ing[0].price;
+            let count = "";
+            if (el.count !== 1) {
+                count = '+' + el.count;
             }
+            ingredients.push({ item: ing[0], count: count });
+            summ = summ + ing[0].price * el.count;
+
         }
 
     });
@@ -80,12 +86,14 @@ function FeedElement({ item }: any) {
             <p className="text text_type_main-medium ml-6 mr-6 mb-6">{item.name}</p>
             <div className={`${style.box} ml-6 mr-6 pb-6`}>
                 <div className={style.ingredients_box}>
-                    {ingredients.map((el: TIngredients, index: number) => {
-                        if (index < 5) {
-                            return (<div className={style.border} key={index}>
-                                < img className={style.image} src={el.image} alt={el.name} />
-                            </div>)
-                        }
+                    {ingredients.map((el: TOrderIngredients, index: number) => {
+
+                        return (<div className={style.border} key={index}>
+                            <span className={`${style.span} text text_type_digits-default`}>{el.count}</span>
+                            < img className={style.image} src={el.item.image} alt={el.item.name} />
+
+                        </div>)
+
                     })}
 
                 </div>

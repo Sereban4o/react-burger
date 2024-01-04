@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../services/utils/hooks";
 import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
-import { TIngredients } from "../../services/utils/data";
+import { TIngredients, TNewTableOrderIngredients, TOrderElement, TOrderIngredients } from "../../services/utils/data";
 import style from "./OrderInfo.module.css";
+import { tableLayout } from "../../services/utils/utils";
 
 function OrderInfo() {
     const { id } = useParams();
@@ -10,12 +11,15 @@ function OrderInfo() {
     const { dataApi } = useAppSelector(
         (state) => state.ingredients
     );
+    if (!ordersInfo) {
+        return (<></>)
+    };
     const ordersAPI = ordersInfo.orders;
     if (!ordersAPI) {
         return <>Нет данных</>;
     }
 
-    const orders = ordersAPI.filter((el: any) => el._id === id);
+    const orders = ordersAPI.filter((el: TOrderElement) => el._id === id);
     if (orders.length < 1) {
         return <>Нет данных</>;
     }
@@ -56,27 +60,25 @@ function OrderInfo() {
     }
 
 
-    let ingredients: any = [];
+    let ingredients: Array<TOrderIngredients> = [];
     let summ = 0;
+    const newT = tableLayout(order.ingredients);
 
-    order.ingredients.forEach((el: string) => {
-        const ing = dataApi.filter((item: TIngredients) => item._id === el);
+    newT.forEach((el: TNewTableOrderIngredients) => {
+        const ing = dataApi.filter((item: TIngredients) => item._id === el.id);
         if (ing) {
-            ingredients.push(ing[0]);
-            summ = summ + ing[0].price;
-            if (ing[0].type === 'bun') {
-                summ = summ + ing[0].price;
-            }
+            ingredients.push({ item: ing[0], count: el.count });
+            summ = summ + ing[0].price * el.count;
+
         }
 
     });
+
     let status = 'Не выполнен';
 
     if (order.status === 'done') {
         status = "Выполнен";
     }
-
-
 
     return (
         <><div className={style.box}>
@@ -85,19 +87,16 @@ function OrderInfo() {
             <p className={`${style.status} text text_type_main-small mb-15`}>{status}</p>
             <p className="text text_type_main-medium mb-6">Состав:</p>
             <div className={style.ingredients} id="scrollbar">
-                {ingredients.map((el: TIngredients, index: number) => {
-                    let count = 1;
-                    if (el.type === 'bun') {
-                        count = 2;
-                    };
+                {ingredients.map((el: TOrderIngredients, index: number) => {
+
                     return (
-                        <div className={style.row}>
+                        <div className={style.row} key={index}>
                             <div className={style.heading}><div className={style.border}>
-                                <img className={style.image} src={el.image} alt={el.name} />
+                                <img className={style.image} src={el.item.image} alt={el.item.name} />
 
                             </div>
-                                <p className="text text_type_main-medium">{el.name}</p></div>
-                            <p className={`${style.summ} text text_type_digits-default`}>{count} x {el.price}  <CurrencyIcon type="primary" /></p>
+                                <p className="text text_type_main-medium">{el.item.name}</p></div>
+                            <p className={`${style.summ} text text_type_digits-default`}>{el.count} x {el.item.price}  <CurrencyIcon type="primary" /></p>
                         </div>)
                 })}</div>
             <div className={`${style.footer} mt-10`}><p>{textDate}</p>

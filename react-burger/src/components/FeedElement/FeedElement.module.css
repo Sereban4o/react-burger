@@ -22,6 +22,7 @@
     text-align: center;
     border: 2px solid #801AB2;
     border-radius: 100%;
+    position: relative;
 }
 
 .ingredients_box {
@@ -45,4 +46,10 @@
 
 .link {
     color: #ffffff;
+}
+
+.span {
+    position: absolute;
+    top: 30%;
+    left: 30%;
 }

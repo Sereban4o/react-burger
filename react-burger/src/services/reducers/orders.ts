@@ -1,18 +1,19 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { WebsocketStatus } from "../utils/data";
+import { TOrderAPI, TOrderElement, WebsocketStatus } from "../utils/data";
 import { wsClose, wsConnecting, wsError, wsMessage, wsOpen } from "../actions/orders";
+
 
 
 export type OrdersStore = {
     status: WebsocketStatus;
     connectionError: string;
-    ordersInfo: any;
+    ordersInfo: TOrderAPI | undefined;
 }
 
 export const initialStore: OrdersStore = {
     status: WebsocketStatus.OFFLINE,
     connectionError: '',
-    ordersInfo: {}
+    ordersInfo: undefined,
 }
 
 export const ordersReducer = createReducer(initialStore, (builder) => {

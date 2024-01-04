@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
-import { OrdersActions } from "../utils/data";
+import { OrdersActions, TOrderElement } from "../utils/data";
 
 export const connect = createAction<string, 'ORDERS_CONNECT'>('ORDERS_CONNECT')
 export const disconnect = createAction('ORDERS_DISCONNECT')

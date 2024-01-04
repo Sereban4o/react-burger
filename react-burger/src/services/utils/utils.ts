@@ -1,3 +1,4 @@
+import { TNewTableOrderIngredients, TOrderElement } from "./data";
 
 
 export function getCookie(name: string): string | undefined {
@@ -12,7 +13,7 @@ export function getCookie(name: string): string | undefined {
 export function setCookie(
     name: string,
     value: string,
-    props: { [key: string]: any } & { expires?: number | Date | string } = {}
+    props: { [key: string]: string | number | boolean } & { expires?: number | Date | string } = {}
 ) {
     props = props || {};
     let exp = props.expires;
@@ -50,4 +51,15 @@ export function randomString() {
     return random.join("");
 }
 export const getCurrentTimestamp = (): number => new Date().getTime() / 1000;
+
+export function tableLayout(table: Array<string>) {
+    let newTable: Array<TNewTableOrderIngredients> = [];
+    table.forEach((element: string) => {
+        if (newTable.filter((el: TNewTableOrderIngredients) => el.id === element).length === 0) {
+            const filterTable = table.filter((el: string) => element === el);
+            newTable.push({ id: element, count: filterTable.length });
+        }
+    });
+    return newTable;
+}
 

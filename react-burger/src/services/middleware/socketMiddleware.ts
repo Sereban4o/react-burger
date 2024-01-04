@@ -1,6 +1,7 @@
 import { ActionCreatorWithPayload, ActionCreatorWithoutPayload, Middleware } from "@reduxjs/toolkit"
 import { RootState } from "../utils/store"
 import { TOrdersActions } from "../actions/orders"
+import { OrdersActions } from "../utils/data"
 
 export type TwsActionTypes = {
     connect: ActionCreatorWithPayload<string>,
@@ -9,7 +10,7 @@ export type TwsActionTypes = {
     wsOpen: ActionCreatorWithoutPayload,
     wsClose: ActionCreatorWithoutPayload,
     wsError: ActionCreatorWithPayload<string>,
-    wsMessage: ActionCreatorWithPayload<any>,
+    wsMessage: ActionCreatorWithPayload<OrdersActions>,
 }
 
 
@@ -27,7 +28,7 @@ export const createSocketMiddleware = (wsActions: TwsActionTypes): Middleware<{}
             } = wsActions
 
             if (connect.match(action)) {
-                // console.log('Websocket connecting')
+
                 url = action.payload
                 socket = new WebSocket(url)
                 isConnected = true
@@ -37,7 +38,7 @@ export const createSocketMiddleware = (wsActions: TwsActionTypes): Middleware<{}
 
             if (socket && wsConnecting.match(action)) {
                 socket.onopen = () => {
-                    // console.log('open')
+
                     dispatch(wsOpen())
                 }
 
@@ -46,11 +47,11 @@ export const createSocketMiddleware = (wsActions: TwsActionTypes): Middleware<{}
                 }
 
                 socket.onmessage = (event: MessageEvent) => {
-                    //  console.log(event.data);
+
                     const { data } = event
                     try {
-                        const parsedData: any = JSON.parse(data)
-                        //console.log(parsedData);
+                        const parsedData: OrdersActions = JSON.parse(data)
+
                         dispatch(wsMessage(parsedData))
                     } catch (err) {
                         console.error(err)
@@ -60,7 +61,7 @@ export const createSocketMiddleware = (wsActions: TwsActionTypes): Middleware<{}
 
                 socket.onclose = (event: CloseEvent) => {
                     if (event.code !== 1000) {
-                        //   console.error('Connection error')
+
                         dispatch(wsError(`Error: ${event.code}`))
                     }
                     if (isConnected) {
@@ -68,7 +69,7 @@ export const createSocketMiddleware = (wsActions: TwsActionTypes): Middleware<{}
                             dispatch(connect(url))
                         }, 3000)
                     }
-                    // console.log('Connection closed')
+
                     dispatch(wsClose())
                 }
             }
