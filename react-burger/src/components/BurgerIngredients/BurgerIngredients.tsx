@@ -1,7 +1,7 @@
 import style from "./BurgerIngredients.module.css";
 import Ingredient from "../Ingredient/Ingredient";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ChangeEvent, UIEvent, UIEventHandler, useRef, useState } from "react";
+import { UIEvent, useRef, useState } from "react";
 import { useAppSelector } from "../../services/utils/hooks";
 
 function BurgerIngredients() {

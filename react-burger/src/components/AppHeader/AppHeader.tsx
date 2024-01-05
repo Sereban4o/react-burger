@@ -32,7 +32,7 @@ function AppHeader() {
                 }
             ></NavLink>
             <NavLink
-                to="/orders/"
+                to="/feed/"
                 className={({ isActive }) =>
                     `${isActive ? "active" : "inactive"} ${style.app__header_button} ${style.app__header_button_constructor
                     }  mt-4 mb-4 ml-5 mr-5 text text_type_main-default`
@@ -49,13 +49,6 @@ function AppHeader() {
                     )
                 }
             ></NavLink>
-            {/*   <Link
-        to="/feed/"
-        className={`${style.app__header_button} ${style.app__header_button_grey} mt-4 mb-4 ml-5 mr-5 text text_type_main-default`}
-      >
-        <ListIcon type="secondary" />
-        Лента заказов
-      </Link> */}
             <Link to="/" className={style.app__header_logo}>
                 <Logo />
             </Link>

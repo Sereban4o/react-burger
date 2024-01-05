@@ -22,10 +22,10 @@ import { TLoginUser, TPassword, TUser } from "./data";
 import { useNavigate } from "react-router-dom";
 import { error } from "console";
 import { Dispatch } from "react";
-import { TActions } from "./store";
+import { AppDispatch, TActions } from "./store";
 
 
-export const refreshToken = (afterRefresh: any) => (dispatch: Dispatch<TActions>) => {
+export const refreshToken = (afterRefresh: any) => (dispatch: AppDispatch) => {
     refreshTokenRequest().then((res) => {
         saveTokens(res.refreshToken, res.accessToken.split('Bearer ')[1]);
         dispatch(afterRefresh);

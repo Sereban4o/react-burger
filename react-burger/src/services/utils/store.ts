@@ -11,7 +11,7 @@ import { TBugrerIngredientsActions } from '../actions/bugrerIngredients'
 import { TIngredientsActions } from '../actions/ingredients'
 import { TForgotPasswordActions } from '../actions/resetPassword'
 import { TOrderActions } from '../actions/order'
-import { connect, disconnect, wsConnecting, wsOpen, wsClose, wsError, wsMessage, TOrdersActions } from '../actions/orders'
+import { connect, disconnect, wsConnecting, wsOpen, wsClose, wsError, wsMessage, TOrdersActions, connectUser, disconnectUser, wsConnectingUser, wsOpenUser, wsCloseUser, wsErrorUser, wsMessageUser } from '../actions/orders'
 import { createSocketMiddleware } from '../middleware/socketMiddleware'
 
 import { rootReducer } from '../reducers'
@@ -25,6 +25,13 @@ const wsActions = {
     wsClose: wsClose,
     wsError: wsError,
     wsMessage: wsMessage,
+    connectUser: connectUser,
+    disconnectUser: disconnectUser,
+    wsConnectingUser: wsConnectingUser,
+    wsOpenUser: wsOpenUser,
+    wsCloseUser: wsCloseUser,
+    wsErrorUser: wsErrorUser,
+    wsMessageUser: wsMessageUser,
 };
 const webSocketMiddleware: any = createSocketMiddleware(wsActions);
 

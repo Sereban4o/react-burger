@@ -1,11 +1,11 @@
 import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
 import { TNewTableOrderIngredients, TOrderIngredients, TOrderItem } from "../../services/utils/data";
 import { useAppSelector } from "../../services/utils/hooks";
-import style from "./FeedElement.module.css"
+import style from "./FeedElementUser.module.css"
 import { Link, useLocation } from "react-router-dom";
 import { tableLayout } from "../../services/utils/utils";
 
-function FeedElement({ item }: TOrderItem) {
+function FeedElementUser({ item }: TOrderItem) {
 
     const location = useLocation();
     const createDate = new Date(item.createdAt);
@@ -73,7 +73,7 @@ function FeedElement({ item }: TOrderItem) {
     return (<Link
         key={item._id}
         to={{
-            pathname: `/feed/${item._id}/`,
+            pathname: `/profile/orders/${item._id}/`,
         }}
         state={{ background: location }}
         className={style.link}
@@ -104,4 +104,4 @@ function FeedElement({ item }: TOrderItem) {
 
 }
 
-export default FeedElement;
+export default FeedElementUser;

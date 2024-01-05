@@ -7,7 +7,7 @@ import { TUserActions, getUserAction, getUserFailedAction, getUserSuccessAction 
 import { refreshToken } from "./auth";
 import { TIngredients, TLoginUser, TOrderElement, TOrderElements, TPassword, TUser } from "./data";
 import { getCookie, setCookie } from "./utils";
-import { TActions } from "./store";
+import { AppDispatch, TActions } from "./store";
 
 const BASE_URL = "https://norma.nomoreparties.space/api/";
 
@@ -128,7 +128,7 @@ export const logoutRequest = async (): Promise<CustomResponse<TResponseBody>> =>
 
 export function getIngredients() {
 
-    return async function (dispatch: Dispatch<TActions>) {
+    return async function (dispatch: AppDispatch) {
         dispatch(ingredientsAction());
 
         try {
@@ -144,7 +144,7 @@ export function getIngredients() {
 
 
 export function getForgotPassword(json: TLoginUser) {
-    return async function (dispatch: Dispatch<TActions>) {
+    return async function (dispatch: AppDispatch) {
         dispatch(getForgotPasswordAction());
 
         try {
@@ -175,7 +175,7 @@ export function getForgotPassword(json: TLoginUser) {
 }
 
 export function getResetPassword(json: TPassword) {
-    return async function (dispatch: Dispatch<TActions>) {
+    return async function (dispatch: AppDispatch) {
         dispatch(getForgotPasswordAction());
 
         try {
@@ -205,7 +205,7 @@ export function getResetPassword(json: TPassword) {
 }
 
 export function saveUserAPI(user: TUser) {
-    return async function (dispatch: Dispatch<TActions>) {
+    return async function (dispatch: AppDispatch) {
         dispatch(getUserAction());
 
         try {
@@ -250,7 +250,7 @@ export function getOrder(orderElementsID: TOrderElements) {
         },
     };
 
-    return async function (dispatch: Dispatch<TActions>) {
+    return async function (dispatch: AppDispatch) {
         dispatch(getOrderAction());
 
         try {

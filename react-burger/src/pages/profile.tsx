@@ -13,7 +13,7 @@ import {
 import { useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "../services/utils/auth";
 import { useVisible } from "../hooks/visible";
-import { useAppDispatch } from "../services/utils/hooks";
+
 
 
 interface IUser {
@@ -24,7 +24,7 @@ interface IUser {
 
 export function Profile() {
     const auth = useAuth();
-    const dispatch = useAppDispatch();
+
     const [user, setUser] = useState<IUser>({
         name: "",
         email: "",

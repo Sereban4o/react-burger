@@ -6,6 +6,7 @@ import { userReducer } from "./user";
 import { modalReducer } from "./modal";
 import { resetPasswordReducer } from "./resetPassword";
 import { ordersReducer } from "./orders";
+import { ordersUserReducer } from "./ordersUser";
 
 
 export const rootReducer = combineReducers({
@@ -16,5 +17,6 @@ export const rootReducer = combineReducers({
     modal: modalReducer,
     resetPassword: resetPasswordReducer,
     orders: ordersReducer,
+    ordersUser: ordersUserReducer,
 
 });

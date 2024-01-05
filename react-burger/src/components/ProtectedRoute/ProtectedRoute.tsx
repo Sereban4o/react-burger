@@ -1,8 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
-
 import { TProtectedRouteProps } from "../../services/utils/data";
-import { useAppSelector } from "../../services/utils/hooks";
 import { useAuth } from "../../services/utils/auth";
 
 export const ProtectedRoute = ({

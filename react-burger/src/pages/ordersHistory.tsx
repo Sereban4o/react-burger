@@ -2,7 +2,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import style from "./profile.module.css";
 import { useCallback } from "react";
 import { useAuth } from "../services/utils/auth";
-import FeedContainer from "../components/FeedContainer/FeedContainer";
 import UserFeedContainer from "../components/UserFeedContainer/UserFeedContainer";
 export function OrdersHistory() {
 

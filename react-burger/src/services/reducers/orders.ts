@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { TOrderAPI, TOrderElement, WebsocketStatus } from "../utils/data";
+import { TOrderAPI, WebsocketStatus } from "../utils/data";
 import { wsClose, wsConnecting, wsError, wsMessage, wsOpen } from "../actions/orders";
 
 
@@ -8,12 +8,14 @@ export type OrdersStore = {
     status: WebsocketStatus;
     connectionError: string;
     ordersInfo: TOrderAPI | undefined;
+
 }
 
 export const initialStore: OrdersStore = {
     status: WebsocketStatus.OFFLINE,
     connectionError: '',
     ordersInfo: undefined,
+
 }
 
 export const ordersReducer = createReducer(initialStore, (builder) => {
@@ -33,4 +35,5 @@ export const ordersReducer = createReducer(initialStore, (builder) => {
         .addCase(wsMessage, (state, action) => {
             state.ordersInfo = action.payload;
         })
+
 })

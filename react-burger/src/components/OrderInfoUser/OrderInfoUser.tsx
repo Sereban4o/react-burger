@@ -1,20 +1,20 @@
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../services/utils/hooks";
 import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
-import { TNewTableOrderIngredients, TOrderElement, TOrderIngredients } from "../../services/utils/data";
-import style from "./OrderInfo.module.css";
+import { TNewTableOrderIngredients, TOrderIngredients } from "../../services/utils/data";
+import style from "./OrderInfoUser.module.css";
 import { tableLayout } from "../../services/utils/utils";
 
-function OrderInfo() {
+function OrderInfoUser() {
     const { id } = useParams();
-    const { ordersInfo } = useAppSelector((state) => state.orders);
+    const { ordersUser } = useAppSelector((state) => state.ordersUser);
     const { dataApi } = useAppSelector(
         (state) => state.ingredients
     );
-    if (!ordersInfo) {
+    if (!ordersUser) {
         return (<></>)
     };
-    const ordersAPI = ordersInfo.orders;
+    const ordersAPI = ordersUser.orders;
     if (!ordersAPI) {
         return <>Нет данных</>;
     }
@@ -107,4 +107,4 @@ function OrderInfo() {
     );
 }
 
-export default OrderInfo;
+export default OrderInfoUser;
