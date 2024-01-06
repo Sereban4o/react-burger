@@ -7,6 +7,8 @@ import { modalReducer } from "./modal";
 import { resetPasswordReducer } from "./resetPassword";
 import { ordersReducer } from "./orders";
 import { ordersUserReducer } from "./ordersUser";
+import { orderFeedReducer } from "./orderFeed";
+import { orderFeedUserReducer } from "./orderFeedUser";
 
 
 export const rootReducer = combineReducers({
@@ -18,5 +20,7 @@ export const rootReducer = combineReducers({
     resetPassword: resetPasswordReducer,
     orders: ordersReducer,
     ordersUser: ordersUserReducer,
+    orderFeed: orderFeedReducer,
+    orderFeedUser: orderFeedUserReducer,
 
 });

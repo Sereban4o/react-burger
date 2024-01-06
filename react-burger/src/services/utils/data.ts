@@ -4,7 +4,7 @@ export type TOrderElement = {
     createdAt: string;
     ingredients: Array<string>;
     name: string;
-    number: number;
+    number: string;
     status: string;
     updatedAt: string;
     _id: string;

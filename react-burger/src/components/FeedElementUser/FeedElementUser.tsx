@@ -73,7 +73,7 @@ function FeedElementUser({ item }: TOrderItem) {
     return (<Link
         key={item._id}
         to={{
-            pathname: `/profile/orders/${item._id}/`,
+            pathname: `/profile/orders/${item.number}/`,
         }}
         state={{ background: location }}
         className={style.link}

@@ -5,9 +5,11 @@ import { getOrderAction, getOrderFailedAction, getOrderSuccessAction } from "../
 import { TForgotPasswordActions, getForgotPasswordAction, getForgotPasswordFailedAction, getForgotPasswordSuccessAction } from "../actions/resetPassword";
 import { TUserActions, getUserAction, getUserFailedAction, getUserSuccessAction } from "../actions/user";
 import { refreshToken } from "./auth";
-import { TIngredients, TLoginUser, TOrderElement, TOrderElements, TPassword, TUser } from "./data";
+import { TIngredients, TLoginUser, TOrderAPI, TOrderElement, TOrderElements, TPassword, TUser } from "./data";
 import { getCookie, setCookie } from "./utils";
 import { AppDispatch, TActions } from "./store";
+import { getOrderFeedAction, getOrderFeedFailedAction, getOrderFeedSuccessAction } from "../actions/orderFeed";
+import { getOrderFeedUserAction, getOrderFeedUserFailedAction, getOrderFeedUserSuccessAction } from "../actions/orderFeedUser";
 
 const BASE_URL = "https://norma.nomoreparties.space/api/";
 
@@ -38,6 +40,7 @@ type TResponseBody<TDataKey extends string = '', TDataType = {}> = {
     data: Array<TIngredients>,
     user: TUser,
     order: TOrderElement,
+    orders: Array<TOrderElement>,
 };
 
 interface CustomBody<T extends any> extends Body {
@@ -70,7 +73,6 @@ const checkSuccess = (res: TResponseBody) => {
 };
 
 export const request = (url: string, options: any) => {
-
     return fetch(`${BASE_URL}${url}`, options)
         .then(checkResponse)
         .then(checkSuccess);
@@ -273,6 +275,61 @@ export function getOrder(orderElementsID: TOrderElements) {
             } else {
                 dispatch(getOrderFailedAction());
             }
+        }
+    };
+}
+
+export function getOrderFeed(number: string | undefined) {
+
+    return async function (dispatch: AppDispatch) {
+        dispatch(getOrderFeedAction());
+
+        try {
+            const dataAPI = await request(`orders/${number}`, null);
+
+            dispatch(getOrderFeedSuccessAction(dataAPI.orders));
+
+        } catch (error: unknown) {
+            let message: string;
+
+            if (error instanceof Error) {
+                message = error.message;
+            } else if (typeof error === 'string') {
+                message = error;
+            } else {
+                message = "Неизвестная ошибка"
+            }
+
+            dispatch(getOrderFeedFailedAction());
+
+        }
+    };
+}
+
+
+export function getOrderFeedUser(number: string | undefined) {
+
+    return async function (dispatch: AppDispatch) {
+        dispatch(getOrderFeedUserAction());
+
+        try {
+            const dataAPI = await request(`orders/${number}`, null);
+
+            dispatch(getOrderFeedUserSuccessAction(dataAPI.orders));
+
+        } catch (error: unknown) {
+            let message: string;
+
+            if (error instanceof Error) {
+                message = error.message;
+            } else if (typeof error === 'string') {
+                message = error;
+            } else {
+                message = "Неизвестная ошибка"
+            }
+
+            dispatch(getOrderFeedUserFailedAction());
+
         }
     };
 }

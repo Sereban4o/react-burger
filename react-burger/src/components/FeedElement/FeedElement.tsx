@@ -73,7 +73,7 @@ function FeedElement({ item }: TOrderItem) {
     return (<Link
         key={item._id}
         to={{
-            pathname: `/feed/${item._id}/`,
+            pathname: `/feed/${item.number}/`,
         }}
         state={{ background: location }}
         className={style.link}

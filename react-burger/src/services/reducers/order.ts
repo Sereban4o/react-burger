@@ -3,39 +3,39 @@ import { GET_ORDER, GET_ORDER_FAILED, GET_ORDER_SUCCESS } from "../constants";
 
 
 export type TOrderState = {
-  order: number | null,
-  request: boolean,
-  requestFailed: boolean,
+    order: string | null,
+    request: boolean,
+    requestFailed: boolean,
 };
 
 const initialState: TOrderState = {
-  order: null,
-  request: false,
-  requestFailed: false,
+    order: null,
+    request: false,
+    requestFailed: false,
 };
 
 export const orderReducer = (state = initialState, action: TOrderActions): TOrderState => {
-  switch (action.type) {
-    case GET_ORDER: {
-      return {
-        ...state,
-        request: true,
-      };
-    }
-    case GET_ORDER_SUCCESS: {
+    switch (action.type) {
+        case GET_ORDER: {
+            return {
+                ...state,
+                request: true,
+            };
+        }
+        case GET_ORDER_SUCCESS: {
 
-      return {
-        ...state,
-        requestFailed: false,
-        order: action.order,
-        request: false,
-      };
+            return {
+                ...state,
+                requestFailed: false,
+                order: action.order,
+                request: false,
+            };
+        }
+        case GET_ORDER_FAILED: {
+            return { ...state, requestFailed: true, request: false };
+        }
+        default: {
+            return state;
+        }
     }
-    case GET_ORDER_FAILED: {
-      return { ...state, requestFailed: true, request: false };
-    }
-    default: {
-      return state;
-    }
-  }
 };

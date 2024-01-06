@@ -1,10 +1,4 @@
 import { ThunkAction, ThunkDispatch, configureStore } from '@reduxjs/toolkit'
-import { bugrerIngredientsReducer } from '../reducers/bugrerIngredients'
-import { ingredientsReducer } from '../reducers/ingredients'
-import { modalReducer } from '../reducers/modal'
-import { orderReducer } from '../reducers/order'
-import { resetPasswordReducer } from '../reducers/resetPassword'
-import { userReducer } from '../reducers/user'
 import { TUserActions } from '../actions/user'
 import { TModalActions } from '../actions/modal'
 import { TBugrerIngredientsActions } from '../actions/bugrerIngredients'
@@ -15,6 +9,8 @@ import { connect, disconnect, wsConnecting, wsOpen, wsClose, wsError, wsMessage,
 import { createSocketMiddleware } from '../middleware/socketMiddleware'
 
 import { rootReducer } from '../reducers'
+import { TOrderFeedActions } from '../actions/orderFeed'
+import { TOrderFeedUserActions } from '../actions/orderFeedUser'
 
 
 const wsActions = {
@@ -50,7 +46,9 @@ export type TActions =
     | TIngredientsActions
     | TForgotPasswordActions
     | TOrderActions
-    | TOrdersActions;
+    | TOrdersActions
+    | TOrderFeedActions
+    | TOrderFeedUserActions;
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = ThunkDispatch<RootState, unknown, TActions>;

@@ -19,10 +19,8 @@ import Error404 from "../Error404/Error404";
 import { useAppDispatch } from "../../services/utils/hooks";
 import { getIngredients } from "../../services/utils/api";
 import { Feed } from "../../pages/feed";
-import { connect, connectUser, disconnect, disconnectUser } from "../../services/actions/orders";
 import OrderInfo from "../OrderInfo/OrderInfo";
 import { OrdersHistory } from "../../pages/ordersHistory";
-import { getCookie } from "../../services/utils/utils";
 import OrderInfoUser from "../OrderInfoUser/OrderInfoUser";
 
 
@@ -38,20 +36,6 @@ function App() {
         auth.getUser();
     }, [dispatch]);
 
-    useEffect(() => {
-        const accessToken = getCookie("accessToken");
-        dispatch(connectUser(`wss://norma.nomoreparties.space/orders?token=${accessToken}`));
-        return () => {
-            dispatch(disconnectUser());
-        };
-    }, [dispatch]);
-
-    useEffect(() => {
-        dispatch(connect(`wss://norma.nomoreparties.space/orders/all`));
-        return () => {
-            dispatch(disconnect());
-        };
-    }, [dispatch]);
 
 
     return (
@@ -62,7 +46,7 @@ function App() {
                     <Route path="/" element={<MainPage />}></Route>
                     <Route path="/ingredient/:id/" element={<IngredientDetails />} />
                     <Route path="/feed/" element={<Feed />} />
-                    <Route path="/feed/:id/" element={<OrderInfo />} />
+                    <Route path="/feed/:number/" element={<OrderInfo />} />
                     <Route
                         path="/login/"
                         element={
@@ -121,7 +105,7 @@ function App() {
                         }
                     />
                     <Route
-                        path="/profile/orders/:id"
+                        path="/profile/orders/:number/"
                         element={
                             <ProtectedRoute>
                                 <OrderInfoUser />
@@ -142,7 +126,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="/feed/:id/"
+                            path="/feed/:number/"
                             element={
                                 <Modal onClick={closeModal}>
                                     <OrderInfo />
@@ -150,7 +134,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="/profile/orders/:id"
+                            path="/profile/orders/:number/"
                             element={
                                 <ProtectedRoute>
                                     <Modal onClick={closeModal}>
