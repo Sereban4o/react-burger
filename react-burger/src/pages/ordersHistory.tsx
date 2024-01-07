@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import style from "./profile.module.css";
 import { useCallback } from "react";
 import { useAuth } from "../services/utils/auth";
-import UserFeedContainer from "../components/UserFeedContainer/UserFeedContainer";
+import FeedContainer from "../components/FeedContainer/FeedContainer";
 export function OrdersHistory() {
 
     const auth = useAuth();
@@ -51,7 +51,7 @@ export function OrdersHistory() {
                     В это разделе вы можете изменить свои персональные данные
                 </p>
             </div>
-            <div><UserFeedContainer /></div>
+            <div><FeedContainer /></div>
         </div>
     );
 }

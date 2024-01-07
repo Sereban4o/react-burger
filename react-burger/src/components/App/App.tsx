@@ -21,7 +21,7 @@ import { getIngredients } from "../../services/utils/api";
 import { Feed } from "../../pages/feed";
 import OrderInfo from "../OrderInfo/OrderInfo";
 import { OrdersHistory } from "../../pages/ordersHistory";
-import OrderInfoUser from "../OrderInfoUser/OrderInfoUser";
+
 
 
 function App() {
@@ -108,7 +108,7 @@ function App() {
                         path="/profile/orders/:number/"
                         element={
                             <ProtectedRoute>
-                                <OrderInfoUser />
+                                <OrderInfo />
                             </ProtectedRoute>
                         }
                     />
@@ -138,7 +138,7 @@ function App() {
                             element={
                                 <ProtectedRoute>
                                     <Modal onClick={closeModal}>
-                                        <OrderInfoUser />
+                                        <OrderInfo />
                                     </Modal>
                                 </ProtectedRoute>
                             }

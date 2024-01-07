@@ -1,15 +1,15 @@
-import { Dispatch } from "react";
+
 import { clearIngredientsAction } from "../actions/bugrerIngredients";
-import { TIngredientsActions, ingredientsAction, ingredientsFailedAction, ingredientsSuccessAction } from "../actions/ingredients";
+import { ingredientsAction, ingredientsFailedAction, ingredientsSuccessAction } from "../actions/ingredients";
 import { getOrderAction, getOrderFailedAction, getOrderSuccessAction } from "../actions/order";
-import { TForgotPasswordActions, getForgotPasswordAction, getForgotPasswordFailedAction, getForgotPasswordSuccessAction } from "../actions/resetPassword";
-import { TUserActions, getUserAction, getUserFailedAction, getUserSuccessAction } from "../actions/user";
+import { getForgotPasswordAction, getForgotPasswordFailedAction, getForgotPasswordSuccessAction } from "../actions/resetPassword";
+import { getUserAction, getUserFailedAction, getUserSuccessAction } from "../actions/user";
 import { refreshToken } from "./auth";
 import { TIngredients, TLoginUser, TOrderAPI, TOrderElement, TOrderElements, TPassword, TUser } from "./data";
 import { getCookie, setCookie } from "./utils";
-import { AppDispatch, TActions } from "./store";
+import { AppDispatch } from "./store";
 import { getOrderFeedAction, getOrderFeedFailedAction, getOrderFeedSuccessAction } from "../actions/orderFeed";
-import { getOrderFeedUserAction, getOrderFeedUserFailedAction, getOrderFeedUserSuccessAction } from "../actions/orderFeedUser";
+
 
 const BASE_URL = "https://norma.nomoreparties.space/api/";
 
@@ -306,30 +306,3 @@ export function getOrderFeed(number: string | undefined) {
     };
 }
 
-
-export function getOrderFeedUser(number: string | undefined) {
-
-    return async function (dispatch: AppDispatch) {
-        dispatch(getOrderFeedUserAction());
-
-        try {
-            const dataAPI = await request(`orders/${number}`, null);
-
-            dispatch(getOrderFeedUserSuccessAction(dataAPI.orders));
-
-        } catch (error: unknown) {
-            let message: string;
-
-            if (error instanceof Error) {
-                message = error.message;
-            } else if (typeof error === 'string') {
-                message = error;
-            } else {
-                message = "Неизвестная ошибка"
-            }
-
-            dispatch(getOrderFeedUserFailedAction());
-
-        }
-    };
-}
