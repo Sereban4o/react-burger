@@ -43,6 +43,8 @@ type TResponseBody<TDataKey extends string = '', TDataType = {}> = {
     orders: Array<TOrderElement>,
 };
 
+
+
 interface CustomBody<T extends any> extends Body {
     json(): Promise<T>;
 }
@@ -73,6 +75,7 @@ const checkSuccess = (res: TResponseBody) => {
 };
 
 export const request = (url: string, options: any) => {
+
     return fetch(`${BASE_URL}${url}`, options)
         .then(checkResponse)
         .then(checkSuccess);
@@ -115,18 +118,27 @@ export const loginRequest = async (user: {
 
     });
 
-export const logoutRequest = async (): Promise<CustomResponse<TResponseBody>> =>
-    await fetch(`${BASE_URL}auth/logout`, {
+export const registerRequest = async (user: {
+    email: string;
+    password: string;
+    name: string;
+}): Promise<CustomResponse<TResponseBody<'user', TUser>>> =>
+    await fetch(`${BASE_URL}auth/register`, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
+        body: JSON.stringify(user),
         headers: {
             'Content-Type': 'application/json'
         },
         redirect: 'follow',
-        referrerPolicy: 'no-referrer'
+        referrerPolicy: 'no-referrer',
+
     });
+
+
+
 
 export function getIngredients() {
 
