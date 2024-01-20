@@ -55,7 +55,7 @@ export const getCurrentTimestamp = (): number => new Date().getTime() / 1000;
 export function tableLayout(table: Array<string>) {
     let newTable: Array<TNewTableOrderIngredients> = [];
     table.forEach((element: string) => {
-        if (newTable.filter((el) => el.id === element).length === 0) {
+        if (element && newTable.filter((el) => el.id === element).length === 0) {
             const filterTable = table.filter((el) => element === el);
             newTable.push({ id: element, count: filterTable.length });
         }

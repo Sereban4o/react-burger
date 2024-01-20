@@ -17,7 +17,7 @@ export function Register() {
   const onSubmit = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      auth.signIn(user);
+      auth.register(user);
     },
     [user]
   );

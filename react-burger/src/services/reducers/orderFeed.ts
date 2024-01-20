@@ -1,6 +1,6 @@
 import { TOrderFeedActions } from "../actions/orderFeed";
 import { GET_ORDER_FAILED_FEED, GET_ORDER_FEED, GET_ORDER_SUCCESS_FEED } from "../constants";
-import { TOrderAPI, TOrderElement } from "../utils/data";
+import { TOrderElement } from "../utils/data";
 
 
 
